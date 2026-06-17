@@ -1,5 +1,5 @@
-import React from 'react'
-import { Mail } from 'lucide-react'
+import React, { useState } from 'react'
+import { Mail, Copy, Check } from 'lucide-react'
 import { Instagram, Linkedin, Github } from '../components/ui/Icons'
 import { PORTFOLIO_DATA } from '../data/portfolioData'
 import FadeIn from '../components/ui/FadeIn'
@@ -7,12 +7,23 @@ import FadeIn from '../components/ui/FadeIn'
 export const ContactSection: React.FC = () => {
   const { name, email } = PORTFOLIO_DATA.personal
   const socials = PORTFOLIO_DATA.socials
+  const [copied, setCopied] = useState(false)
 
   const getSocial = (name: string) => socials.find(s => s.name.toLowerCase().includes(name.toLowerCase())) || { name, url: '#' }
 
   const insta = getSocial('instagram')
   const linkedin = getSocial('linkedin')
   const github = getSocial('github')
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(email)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy email: ', err)
+    }
+  }
 
   return (
     <footer id="contact" className="relative bg-[#0C0C0C] text-white px-6 md:px-10 pt-24 pb-12 select-none border-t border-white/5">
@@ -28,16 +39,32 @@ export const ContactSection: React.FC = () => {
             </h2>
           </FadeIn>
 
-          <FadeIn y={35} delay={0.15}>
+          <FadeIn y={35} delay={0.15} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
             <a 
-              href={`mailto:${email}`}
-              className="inline-flex items-center gap-3 bg-white/5 border border-white/10 px-8 py-4 rounded-3xl hover:bg-white/10 hover:border-violet-500/20 transition-all duration-300 group cursor-pointer"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=sheeshsanidhya@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 bg-white/5 border border-white/10 px-8 py-4 rounded-3xl hover:bg-white/10 hover:border-violet-500/20 transition-all duration-300 group cursor-pointer text-white"
             >
               <Mail className="w-5 h-5 text-violet-400 group-hover:scale-110 transition-transform duration-300" />
               <span className="font-medium tracking-wide uppercase text-sm sm:text-base">
                 {email}
               </span>
             </a>
+
+            <button
+              onClick={copyEmail}
+              className="inline-flex items-center justify-center gap-3 bg-white/5 border border-white/10 px-8 py-4 rounded-3xl hover:bg-white/10 hover:border-violet-500/20 transition-all duration-300 group cursor-pointer text-white"
+            >
+              {copied ? (
+                <Check className="w-5 h-5 text-emerald-400 scale-110 transition-transform duration-300" />
+              ) : (
+                <Copy className="w-5 h-5 text-violet-400 group-hover:scale-110 transition-transform duration-300" />
+              )}
+              <span className="font-medium tracking-wide uppercase text-sm sm:text-base">
+                {copied ? 'Copied!' : 'Copy Email'}
+              </span>
+            </button>
           </FadeIn>
         </div>
 

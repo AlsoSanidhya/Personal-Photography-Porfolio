@@ -5,15 +5,15 @@ import type { GalleryItem } from '../data/portfolioData'
 import FadeIn from '../components/ui/FadeIn'
 
 export const GallerySection: React.FC = () => {
-  const [activeFilter, setActiveFilter] = useState<'All' | 'Nature' | 'Street' | 'Travel' | 'Lifestyle'>('All')
+  const [activeFilter, setActiveFilter] = useState<'All' | 'Portraits' | 'Street' | 'Landscapes' | 'Edits'>('All')
   const { gallery } = PORTFOLIO_DATA
 
   const filteredItems = activeFilter === 'All'
     ? gallery
     : gallery.filter(item => item.category === activeFilter)
 
-  const filters: ('All' | 'Nature' | 'Street' | 'Travel' | 'Lifestyle')[] = [
-    'All', 'Nature', 'Street', 'Travel', 'Lifestyle'
+  const filters: ('All' | 'Portraits' | 'Street' | 'Landscapes' | 'Edits')[] = [
+    'All', 'Portraits', 'Street', 'Landscapes', 'Edits'
   ]
 
   return (

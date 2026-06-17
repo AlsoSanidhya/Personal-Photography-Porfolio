@@ -1,5 +1,24 @@
 import React, { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion'
+
+interface CharProps {
+  char: string
+  progress: MotionValue<number>
+  start: number
+  end: number
+}
+
+const AnimatedChar: React.FC<CharProps> = ({ char, progress, start, end }) => {
+  const opacity = useTransform(progress, [start, end], [0.35, 1])
+  return (
+    <span className="relative inline-block">
+      <span className="opacity-0">{char}</span>
+      <motion.span style={{ opacity }} className="absolute inset-0">
+        {char}
+      </motion.span>
+    </span>
+  )
+}
 
 interface AnimatedTextProps {
   text: string
@@ -7,38 +26,61 @@ interface AnimatedTextProps {
 }
 
 export const AnimatedText: React.FC<AnimatedTextProps> = ({ text, className = '' }) => {
-  const containerRef = useRef<HTMLParagraphElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   
-  // Set up useScroll targeting the paragraph element with specified offsets
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start 0.8', 'end 0.2']
+    offset: ['start 0.85', 'end 0.15']
   })
 
-  const characters = text.split('')
+  // Split into paragraphs to preserve newlines
+  const paragraphs = text.split('\n')
+  
+  // Calculate total characters for progress calculations
+  const plainText = text.replace(/\n/g, '')
+  const totalLength = plainText.length
+
+  let charIndex = 0
 
   return (
-    <p ref={containerRef} className={`relative flex flex-wrap justify-center ${className}`}>
-      {characters.map((char, index) => {
-        // Compute range for each character's reveal timeline
-        const start = index / characters.length
-        const end = (index + 1) / characters.length
-        
-        // Transform the scroll position to opacity between 0.2 and 1
-        const opacity = useTransform(scrollYProgress, [start, end], [0.2, 1])
+    <div ref={containerRef} className={`flex flex-col gap-6 text-center items-center ${className}`}>
+      {paragraphs.map((paragraph, pIdx) => {
+        if (paragraph.trim() === '') {
+          return <div key={`space-${pIdx}`} className="h-4" />
+        }
+
+        const words = paragraph.split(' ')
 
         return (
-          <span key={index} className="relative inline-block whitespace-pre">
-            {/* Invisible placeholder for sizing */}
-            <span className="opacity-0">{char}</span>
-            {/* Absolute positioned animated span */}
-            <motion.span style={{ opacity }} className="absolute inset-0">
-              {char}
-            </motion.span>
-          </span>
+          <p key={`p-${pIdx}`} className="flex flex-wrap justify-center gap-x-[0.25em] gap-y-1">
+            {words.map((word, wIdx) => {
+              const chars = word.split('')
+              return (
+                <span key={`w-${wIdx}`} className="inline-block whitespace-nowrap">
+                  {chars.map((char, cIdx) => {
+                    const currentIndex = charIndex
+                    charIndex++
+                    
+                    const start = currentIndex / totalLength
+                    const end = (currentIndex + 1) / totalLength
+
+                    return (
+                      <AnimatedChar
+                        key={`c-${cIdx}`}
+                        char={char}
+                        progress={scrollYProgress}
+                        start={start}
+                        end={end}
+                      />
+                    )
+                  })}
+                </span>
+              )
+            })}
+          </p>
         )
       })}
-    </p>
+    </div>
   )
 }
 

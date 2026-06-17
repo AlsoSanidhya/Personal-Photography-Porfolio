@@ -61,7 +61,7 @@ export const HeroSection: React.FC = () => {
       {/* Hero Heading */}
       <div className="relative z-20 w-full mt-24 sm:mt-16 md:mt-12 overflow-hidden">
         <FadeIn y={40} delay={0.15} duration={0.8}>
-          <h1 className="hero-heading font-black uppercase tracking-tight leading-none text-center sm:text-left whitespace-nowrap w-full text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw] mt-6 sm:mt-4 md:-mt-5">
+          <h1 className="hero-heading font-black uppercase tracking-tight leading-none text-center sm:text-left whitespace-nowrap w-full text-[8.5vw] sm:text-[9vw] md:text-[9.5vw] lg:text-[9.5vw] mt-6 sm:mt-4 md:-mt-5">
             {title}
           </h1>
         </FadeIn>
