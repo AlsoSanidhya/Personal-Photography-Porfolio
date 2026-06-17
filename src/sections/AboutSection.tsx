@@ -18,16 +18,19 @@ export const AboutSection: React.FC = () => {
   return (
     <section
       id="about"
-      className="relative min-h-screen flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-20 bg-[#0C0C0C] overflow-hidden select-none"
+      className="relative min-h-screen flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-32 md:py-44 bg-[#050505] overflow-hidden select-none"
     >
-      {/* Floating 3D Corner Icons */}
+      {/* Background Cinematic Glow */}
+      <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />
+
+      {/* Floating 3D Corner Icons with lowered opacity and screen blending for a softer gallery feel */}
       {/* Top Left - Moon */}
       <FadeIn
         x={-80}
         y={0}
         delay={0.1}
         duration={0.9}
-        className="absolute top-[4%] left-[1%] sm:left-[2%] md:left-[4%] z-10 w-[120px] sm:w-[160px] md:w-[210px] pointer-events-none"
+        className="absolute top-[8%] left-[2%] sm:left-[4%] md:left-[6%] z-10 w-[100px] sm:w-[130px] md:w-[170px] pointer-events-none opacity-40 mix-blend-screen"
       >
         <img src={moon} alt="3D Moon Icon" className="w-full h-auto animate-float-slow" />
       </FadeIn>
@@ -38,7 +41,7 @@ export const AboutSection: React.FC = () => {
         y={0}
         delay={0.25}
         duration={0.9}
-        className="absolute bottom-[8%] left-[3%] sm:left-[6%] md:left-[10%] z-10 w-[100px] sm:w-[140px] md:w-[180px] pointer-events-none"
+        className="absolute bottom-[10%] left-[4%] sm:left-[8%] md:left-[12%] z-10 w-[80px] sm:w-[110px] md:w-[140px] pointer-events-none opacity-30 mix-blend-screen"
       >
         <img src={object3d} alt="3D Object" className="w-full h-auto animate-float-mid" />
       </FadeIn>
@@ -49,7 +52,7 @@ export const AboutSection: React.FC = () => {
         y={0}
         delay={0.15}
         duration={0.9}
-        className="absolute top-[4%] right-[1%] sm:right-[2%] md:right-[4%] z-10 w-[120px] sm:w-[160px] md:w-[210px] pointer-events-none"
+        className="absolute top-[8%] right-[2%] sm:right-[4%] md:right-[6%] z-10 w-[100px] sm:w-[130px] md:w-[170px] pointer-events-none opacity-35 mix-blend-screen"
       >
         <img src={lego} alt="3D Lego Icon" className="w-full h-auto animate-float-mid" />
       </FadeIn>
@@ -60,7 +63,7 @@ export const AboutSection: React.FC = () => {
         y={0}
         delay={0.3}
         duration={0.9}
-        className="absolute bottom-[8%] right-[3%] sm:right-[6%] md:right-[10%] z-10 w-[130px] sm:w-[170px] md:w-[220px] pointer-events-none"
+        className="absolute bottom-[10%] right-[4%] sm:right-[8%] md:right-[12%] z-10 w-[110px] sm:w-[145px] md:w-[180px] pointer-events-none opacity-40 mix-blend-screen"
       >
         <img src={group3d} alt="3D Group" className="w-full h-auto animate-float-slow" />
       </FadeIn>
@@ -68,17 +71,17 @@ export const AboutSection: React.FC = () => {
       {/* Center Content Block */}
       <div className="relative z-20 flex flex-col items-center text-center max-w-4xl">
         {/* Heading */}
-        <FadeIn y={40} delay={0} className="mb-10 sm:mb-14 md:mb-16">
-          <h2 className="hero-heading font-black uppercase tracking-tight leading-none text-[3.5rem] sm:text-[8vw] md:text-[10vw] lg:text-[160px]">
+        <FadeIn y={40} delay={0} className="mb-14 sm:mb-20">
+          <h2 className="hero-heading font-serif font-medium uppercase tracking-[0.05em] leading-none text-[3.5rem] sm:text-[8vw] md:text-[10vw] lg:text-[130px]">
             About me
           </h2>
         </FadeIn>
 
         {/* Scroll Character-Reveal text */}
-        <div className="px-4 mb-16 sm:mb-20 md:mb-24">
+        <div className="px-4 mb-20 sm:mb-28">
           <AnimatedText
             text={bio}
-            className="text-[#D7E2EA] font-medium leading-relaxed max-w-[560px] text-[1.1rem] sm:text-[1.25rem] md:text-[1.35rem]"
+            className="text-[#F5F1E8] font-sans font-light tracking-[0.03em] leading-relaxed max-w-[620px] text-[1.05rem] sm:text-[1.2rem] md:text-[1.25rem]"
           />
         </div>
 

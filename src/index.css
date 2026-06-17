@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Kanit', sans-serif;
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Inter', sans-serif;
 }
 
 html,
@@ -11,19 +12,22 @@ body,
   margin: 0;
   padding: 0;
   font-family: var(--font-sans);
-  background-color: #0C0C0C;
-  color: #FFFFFF;
+  background-color: #050505;
+  color: #F5F1E8;
   scroll-behavior: smooth;
   overflow-x: hidden;
   min-height: 100vh;
 }
 
 .hero-heading {
-  background: linear-gradient(180deg, #8E9BA6 0%, #FFFFFF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0px 4px 16px rgba(0, 0, 0, 0.6));
+  font-family: var(--font-serif);
+  font-weight: 500;
+  color: #F5F1E8;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
+  text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 ::-webkit-scrollbar {
@@ -56,5 +60,9 @@ body,
 
 .animate-float-mid {
   animation: float-mid 6s ease-in-out infinite;
+}
+
+.cinematic-glow {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.07) 0%, rgba(5, 5, 5, 0) 70%);
 }
 

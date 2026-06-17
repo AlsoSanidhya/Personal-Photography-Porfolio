@@ -16,11 +16,14 @@ export const HeroSection: React.FC = () => {
   }
 
   return (
-    <section id="hero" className="relative h-screen flex flex-col justify-between overflow-hidden bg-[#0C0C0C] px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 select-none">
+    <section id="hero" className="relative h-screen flex flex-col justify-between overflow-hidden bg-[#050505] px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 select-none">
+      {/* Background Cinematic Glow */}
+      <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />
+
       {/* Navbar */}
-      <FadeIn y={-20} delay={0} className="w-full">
-        <nav className="flex justify-between items-center pt-6 md:pt-8 text-[#D7E2EA]">
-          <span className="font-bold tracking-widest text-lg md:text-xl cursor-pointer" onClick={() => scrollToSection('hero')}>
+      <FadeIn y={-20} delay={0} className="w-full relative z-30">
+        <nav className="flex justify-between items-center pt-6 md:pt-8 text-[#B8B1A6]">
+          <span className="font-serif tracking-widest text-xl md:text-2xl font-medium text-[#F5F1E8] cursor-pointer" onClick={() => scrollToSection('hero')}>
             {name}.
           </span>
           <div className="flex gap-6 sm:gap-10 md:gap-14">
@@ -28,7 +31,7 @@ export const HeroSection: React.FC = () => {
               <button
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase())}
-                className="uppercase tracking-wider font-medium text-sm md:text-lg lg:text-[1.4rem] hover:opacity-70 transition-opacity duration-200 cursor-pointer"
+                className="uppercase tracking-[0.2em] font-sans font-medium text-xs md:text-sm hover:text-[#F5F1E8] transition-colors duration-300 cursor-pointer"
               >
                 {item}
               </button>
@@ -53,7 +56,7 @@ export const HeroSection: React.FC = () => {
           <img
             src={portraitUrl}
             alt={`${name} Portrait`}
-            className="w-full h-full object-cover rounded-[20px] sm:rounded-[30px] border border-white/10 shadow-2xl pointer-events-none"
+            className="w-full h-full object-cover rounded-[16px] sm:rounded-[24px] border border-[#F5F1E8]/10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] pointer-events-none"
           />
         </Magnet>
       </FadeIn>
@@ -61,7 +64,7 @@ export const HeroSection: React.FC = () => {
       {/* Hero Heading */}
       <div className="relative z-20 w-full mt-24 sm:mt-16 md:mt-12 overflow-hidden">
         <FadeIn y={40} delay={0.15} duration={0.8}>
-          <h1 className="hero-heading font-black uppercase tracking-tight leading-none text-center sm:text-left whitespace-nowrap w-full text-[8.5vw] sm:text-[9vw] md:text-[9.5vw] lg:text-[9.5vw] mt-6 sm:mt-4 md:-mt-5">
+          <h1 className="hero-heading font-serif font-medium uppercase tracking-[0.05em] leading-none text-center sm:text-left whitespace-nowrap w-full text-[8.5vw] sm:text-[9vw] md:text-[9.5vw] lg:text-[9.5vw] mt-6 sm:mt-4 md:-mt-5">
             {title}
           </h1>
         </FadeIn>
@@ -71,20 +74,20 @@ export const HeroSection: React.FC = () => {
       <div className="relative z-25 flex justify-between items-end w-full">
         {/* Left tagline */}
         <FadeIn y={20} delay={0.35}>
-          <p className="font-light uppercase tracking-wide leading-snug text-[#D7E2EA] max-w-[160px] sm:max-w-[220px] md:max-w-[260px]" style={{ fontSize: 'clamp(0.75rem, 1.4vw, 1.5rem)' }}>
+          <p className="font-sans font-light tracking-[0.08em] leading-relaxed text-[#B8B1A6] uppercase max-w-[160px] sm:max-w-[220px] md:max-w-[280px]" style={{ fontSize: 'clamp(0.65rem, 1vw, 0.85rem)' }}>
             {tagline}
           </p>
         </FadeIn>
 
         {/* Scroll Indicator */}
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-2 hidden md:flex flex-col items-center gap-2 text-white/40 text-[10px] tracking-widest uppercase">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-2 hidden md:flex flex-col items-center gap-2 text-[#B8B1A6]/40 text-[9px] tracking-[0.25em] uppercase">
           <span>Scroll</span>
           <motion.div 
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-1.5 h-6 rounded-full bg-white/20 relative"
+            className="w-1.5 h-6 rounded-full bg-[#F5F1E8]/10 relative"
           >
-            <div className="w-1.5 h-1.5 rounded-full bg-violet-400 absolute top-1 left-0" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] absolute top-1 left-0" />
           </motion.div>
         </div>
 
