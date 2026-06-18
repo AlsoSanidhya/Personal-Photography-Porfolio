@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { PORTFOLIO_DATA } from '../data/portfolioData'
 import type { GalleryItem } from '../data/portfolioData'
 import FadeIn from '../components/ui/FadeIn'
+import ParallaxText from '../components/ui/ParallaxText'
 
 export const GallerySection: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<'All' | 'Portraits' | 'Street' | 'Landscapes' | 'Edits'>('All')
@@ -24,9 +25,11 @@ export const GallerySection: React.FC = () => {
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         {/* Section Heading */}
         <FadeIn y={40} className="mb-14 sm:mb-20">
-          <h2 className="hero-heading font-serif font-medium uppercase tracking-[0.05em] leading-none text-center text-[3.5rem] sm:text-[8vw] md:text-[10vw] lg:text-[130px]">
-            Showcase
-          </h2>
+          <ParallaxText baseY={60}>
+            <h2 className="hero-heading font-serif font-medium uppercase tracking-[0.05em] leading-none text-center text-[3.5rem] sm:text-[8vw] md:text-[10vw] lg:text-[130px]">
+              Showcase
+            </h2>
+          </ParallaxText>
         </FadeIn>
 
         {/* Filter Pills */}
@@ -55,10 +58,11 @@ export const GallerySection: React.FC = () => {
             {filteredItems.map((item: GalleryItem) => (
               <motion.div
                 layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+                initial={{ opacity: 0, scale: 0.94, y: 35 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                exit={{ opacity: 0, scale: 0.94 }}
+                transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
                 key={item.id}
                 className="break-inside-avoid relative group overflow-hidden rounded-2xl border border-[#F5F1E8]/5 shadow-2xl aspect-[4/5] sm:aspect-auto"
               >

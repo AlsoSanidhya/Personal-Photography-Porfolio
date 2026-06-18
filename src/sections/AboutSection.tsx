@@ -3,6 +3,7 @@ import { PORTFOLIO_DATA } from '../data/portfolioData'
 import FadeIn from '../components/ui/FadeIn'
 import AnimatedText from '../components/ui/AnimatedText'
 import ContactButton from '../components/ui/ContactButton'
+import ParallaxText from '../components/ui/ParallaxText'
 
 export const AboutSection: React.FC = () => {
   const { moon, object3d, lego, group3d } = PORTFOLIO_DATA.aboutAssets
@@ -72,9 +73,11 @@ export const AboutSection: React.FC = () => {
       <div className="relative z-20 flex flex-col items-center text-center max-w-4xl">
         {/* Heading */}
         <FadeIn y={40} delay={0} className="mb-14 sm:mb-20">
-          <h2 className="hero-heading font-serif font-medium uppercase tracking-[0.05em] leading-none text-[3.5rem] sm:text-[8vw] md:text-[10vw] lg:text-[130px]">
-            About me
-          </h2>
+          <ParallaxText baseY={50}>
+            <h2 className="hero-heading font-serif font-medium uppercase tracking-[0.05em] leading-none text-[3.5rem] sm:text-[8vw] md:text-[10vw] lg:text-[130px]">
+              About me
+            </h2>
+          </ParallaxText>
         </FadeIn>
 
         {/* Scroll Character-Reveal text */}

@@ -3,6 +3,7 @@ import { Mail, Copy, Check } from 'lucide-react'
 import { Instagram, Linkedin, Github } from '../components/ui/Icons'
 import { PORTFOLIO_DATA } from '../data/portfolioData'
 import FadeIn from '../components/ui/FadeIn'
+import ParallaxText from '../components/ui/ParallaxText'
 
 export const ContactSection: React.FC = () => {
   const { name, email } = PORTFOLIO_DATA.personal
@@ -33,7 +34,7 @@ export const ContactSection: React.FC = () => {
       <div className="relative z-10 max-w-6xl mx-auto flex flex-col justify-between min-h-[50vh]">
         {/* Top Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
-          <FadeIn y={35} className="max-w-md">
+          <FadeIn y={35} duration={1.2} className="max-w-md">
             <span className="text-xs font-semibold tracking-[0.2em] text-[#8B5CF6] uppercase mb-2 block">
               Collaboration
             </span>
@@ -42,7 +43,7 @@ export const ContactSection: React.FC = () => {
             </h2>
           </FadeIn>
 
-          <FadeIn y={35} delay={0.15} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
+          <FadeIn y={35} delay={0.15} duration={1.2} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
             <a 
               href="https://mail.google.com/mail/?view=cm&fs=1&to=sheeshsanidhya@gmail.com"
               target="_blank"
@@ -73,20 +74,22 @@ export const ContactSection: React.FC = () => {
 
         {/* Big visual banner */}
         <div className="overflow-hidden mb-16">
-          <FadeIn y={50} delay={0.2} duration={0.8}>
-            <h1 className="hero-heading uppercase tracking-tighter text-center leading-none text-[12vw] sm:text-[13vw] select-none opacity-80">
-              Get In Touch
-            </h1>
+          <FadeIn y={50} delay={0.2} duration={1.2}>
+            <ParallaxText baseY={80}>
+              <h1 className="hero-heading uppercase tracking-tighter text-center leading-none text-[12vw] sm:text-[13vw] select-none opacity-80">
+                Get In Touch
+              </h1>
+            </ParallaxText>
           </FadeIn>
         </div>
 
         {/* Footer Bottom info */}
         <div className="flex flex-col sm:flex-row justify-between items-center border-t border-[#F5F1E8]/5 pt-8 gap-6 text-sm text-[#B8B1A6]">
-          <FadeIn y={10} delay={0.3}>
+          <FadeIn y={10} delay={0.3} duration={1.2}>
             <p>© {new Date().getFullYear()} {name}. ALL RIGHTS RESERVED.</p>
           </FadeIn>
 
-          <FadeIn y={10} delay={0.4} className="flex gap-6 sm:gap-8">
+          <FadeIn y={10} delay={0.4} duration={1.2} className="flex gap-6 sm:gap-8">
             <a href={insta.url} target="_blank" rel="noopener noreferrer" className="text-[#B8B1A6] hover:text-[#F5F1E8] transition-colors duration-200 uppercase tracking-widest text-[10px] sm:text-xs font-semibold flex items-center gap-2">
               <Instagram className="w-4 h-4" /> Instagram
             </a>
