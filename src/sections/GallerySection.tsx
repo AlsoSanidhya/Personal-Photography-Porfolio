@@ -20,7 +20,7 @@ export const GallerySection: React.FC = () => {
   return (
     <section
       id="gallery"
-      className="relative bg-[#050505] text-[#F5F1E8] px-5 sm:px-8 md:px-10 py-32 md:py-44 z-20 select-none border-t border-[#F5F1E8]/5"
+      className="relative bg-transparent text-[#F5F1E8] px-5 sm:px-8 md:px-10 py-32 md:py-44 z-20 select-none border-t border-[#F5F1E8]/5"
     >
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         {/* Section Heading */}

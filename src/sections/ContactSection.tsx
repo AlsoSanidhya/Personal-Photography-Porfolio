@@ -27,7 +27,7 @@ export const ContactSection: React.FC = () => {
   }
 
   return (
-    <footer id="contact" className="relative bg-[#050505] text-[#F5F1E8] px-6 md:px-10 pt-24 pb-12 select-none border-t border-[#F5F1E8]/5 overflow-hidden">
+    <footer id="contact" className="relative bg-transparent text-[#F5F1E8] px-6 md:px-10 pt-24 pb-12 select-none border-t border-[#F5F1E8]/5 z-10">
       {/* Cinematic radial background glow */}
       <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />
 

@@ -19,7 +19,7 @@ export const AboutSection: React.FC = () => {
   return (
     <section
       id="about"
-      className="relative min-h-screen flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-32 md:py-44 bg-[#050505] overflow-hidden select-none"
+      className="relative min-h-screen flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-32 md:py-44 bg-transparent z-10 select-none"
     >
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />

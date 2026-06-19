@@ -143,7 +143,7 @@ export const StoriesSection: React.FC = () => {
     <section
       id="stories"
       ref={containerRef}
-      className="relative bg-[#050505] z-10 pb-32 md:pb-44 select-none border-t border-[#F5F1E8]/5"
+      className="relative bg-transparent z-10 pb-32 md:pb-44 select-none border-t border-[#F5F1E8]/5"
     >
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />

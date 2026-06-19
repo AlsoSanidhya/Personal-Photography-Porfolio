@@ -93,7 +93,11 @@ export const ParticleField: React.FC = () => {
     setupCanvas()
     window.addEventListener('resize', setupCanvas)
 
+    let lastMouseMoveTime = 0
     const handleMouseMove = (e: MouseEvent) => {
+      const now = performance.now()
+      if (now - lastMouseMoveTime < 33) return // Cap to ~30fps
+      lastMouseMoveTime = now
       mouseRef.current.x = e.clientX
       mouseRef.current.y = e.clientY
     }
@@ -106,7 +110,7 @@ export const ParticleField: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseleave', handleMouseLeave)
 
-    const hoverRadius = 140
+    const hoverRadius = 150
     const pushStrength = 24
 
     const render = (time: number) => {
@@ -143,7 +147,9 @@ export const ParticleField: React.FC = () => {
 
             if (dist < hoverRadius) {
               const ratio = 1 - dist / hoverRadius
+              // Increase size slightly near the cursor
               targetRadius = p.baseRadius * (1 + ratio * 0.95)
+              // Increase opacity slightly near the cursor
               targetAlpha = Math.min(0.80, p.baseAlpha + (0.85 - p.baseAlpha) * ratio * 0.5)
 
               const force = ratio * pushStrength * (p.depth * 0.4 + 0.6)
@@ -153,7 +159,7 @@ export const ParticleField: React.FC = () => {
             }
           }
 
-          // Lerp values for premium cinematic smoothness
+          // Lerp values for premium cinematic smoothness & interpolation back to original
           p.currentRadius += (targetRadius - p.currentRadius) * 0.08
           p.currentAlpha += (targetAlpha - p.currentAlpha) * 0.08
           p.dispX += (targetDispX - p.dispX) * 0.06
@@ -177,13 +183,9 @@ export const ParticleField: React.FC = () => {
         } else {
           ctx.fillStyle = `rgba(220,220,255,${p.currentAlpha * 0.7})`
         }
-        // Optimize shadow rendering (only apply shadow blur on foreground depth level 3)
-        if (p.depth === 3 && !reducedMotion) {
-          ctx.shadowBlur = 3
-          ctx.shadowColor = 'rgba(245, 241, 232, 0.35)'
-        } else {
-          ctx.shadowBlur = 0
-        }
+
+        // Disable shadows on every particle for 60fps performance
+        ctx.shadowBlur = 0
 
         ctx.fill()
       }
@@ -204,7 +206,7 @@ export const ParticleField: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-10"
+      className="fixed inset-0 pointer-events-none z-1"
       style={{ mixBlendMode: 'screen' }}
     />
   )

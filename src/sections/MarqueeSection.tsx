@@ -48,7 +48,7 @@ export const MarqueeSection: React.FC = () => {
   return (
     <div
       ref={sectionRef}
-      className="bg-[#0C0C0C] pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden relative select-none"
+      className="bg-transparent z-10 pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden relative select-none"
     >
       <div className="flex flex-col gap-3">
         {/* Row 1 */}

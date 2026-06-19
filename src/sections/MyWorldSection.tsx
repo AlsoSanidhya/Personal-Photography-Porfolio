@@ -43,7 +43,7 @@ export const MyWorldSection: React.FC = () => {
   }
 
   return (
-    <section id="my-world" className="relative bg-[#050505] text-[#F5F1E8] px-5 sm:px-8 md:px-10 py-32 md:py-44 select-none border-t border-[#F5F1E8]/5">
+    <section id="my-world" className="relative bg-transparent text-[#F5F1E8] px-5 sm:px-8 md:px-10 py-32 md:py-44 z-10 select-none border-t border-[#F5F1E8]/5">
       <div className="max-w-6xl mx-auto">
         {/* Section Title */}
         <FadeIn y={40} className="mb-16 text-center sm:text-left">

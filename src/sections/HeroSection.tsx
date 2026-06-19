@@ -1,7 +1,6 @@
 import React from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { PORTFOLIO_DATA } from '../data/portfolioData'
-import Magnet from '../components/ui/Magnet'
 import ContactButton from '../components/ui/ContactButton'
 
 export const HeroSection: React.FC = () => {
@@ -18,62 +17,49 @@ export const HeroSection: React.FC = () => {
   const { scrollY } = useScroll()
   const titleY = useTransform(scrollY, [0, 800], [0, 140])
 
-  // Coordinated mount staggers for a premium cinematic entry
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
-    }
-  }
-
+  // Explicit transitions for each element to coordinate premium entry
   const navVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 1.2, ease: [0.25, 0.1, 0.25, 1] as const }
+      transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] as const, delay: 0.1 }
     }
   }
 
   const titleVariants = {
-    hidden: { opacity: 0, y: 45 },
+    hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 1.4, ease: [0.25, 0.1, 0.25, 1] as const }
+      transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] as const, delay: 0.5 }
     }
   }
 
   const portraitVariants = {
-    hidden: { opacity: 0, y: 55, scale: 0.98 },
+    hidden: { opacity: 0, scale: 0.98 },
     visible: {
       opacity: 1,
-      y: 0,
       scale: 1,
-      transition: { duration: 1.6, ease: [0.25, 0.1, 0.25, 1] as const }
+      transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1] as const, delay: 0.9 }
     }
   }
 
   const bottomElementVariants = {
-    hidden: { opacity: 0, y: 25 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 1.2, ease: [0.25, 0.1, 0.25, 1] as const }
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const, delay: 1.2 }
     }
   }
 
   return (
     <motion.section
       id="hero"
-      variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="relative h-screen flex flex-col justify-between overflow-hidden bg-[#050505] px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 select-none"
+      className="relative h-screen flex flex-col justify-between bg-transparent z-10 px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 select-none"
     >
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />
@@ -102,41 +88,47 @@ export const HeroSection: React.FC = () => {
         </div>
       </motion.nav>
 
-      {/* Hero Portrait (Centered absolutely) */}
+      {/* Hero Portrait (Centered absolutely, halo floats behind it at z-5) */}
       <motion.div
         variants={portraitVariants}
         className="absolute left-1/2 -translate-x-1/2 z-10 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0"
       >
-        <Magnet
-          padding={150}
-          strength={3}
-          activeTransition="transform 0.3s ease-out"
-          inactiveTransition="transform 0.6s ease-in-out"
-          className="relative w-full aspect-[4/5]"
-        >
+        <div className="relative w-full aspect-[4/5]">
           <img
             src={portraitUrl}
             alt={`${name} Portrait`}
             className="w-full h-full object-cover rounded-[16px] sm:rounded-[24px] border border-[#F5F1E8]/10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] pointer-events-none"
           />
-        </Magnet>
+        </div>
       </motion.div>
 
       {/* Hero Heading */}
       <motion.div variants={titleVariants} className="relative z-20 w-full mt-24 sm:mt-16 md:mt-12 overflow-hidden">
         <motion.div style={{ y: titleY, willChange: 'transform' }}>
-          <motion.h1
-            className="hero-heading font-serif font-medium uppercase tracking-[0.05em] leading-none text-center sm:text-left whitespace-nowrap w-full text-[8.5vw] sm:text-[9vw] md:text-[9.5vw] lg:text-[9.5vw] mt-6 sm:mt-4 md:-mt-5"
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 2,
-              delay: 0.8,
-              ease: [0.22, 1, 0.36, 1]
-            }}
+          <h1
+            className="
+            luxury-sweep
+            hero-heading
+            font-serif
+            font-medium
+            uppercase
+            tracking-[0.05em]
+            leading-none
+            text-center
+            sm:text-left
+            whitespace-nowrap
+            w-full
+            text-[8.5vw]
+            sm:text-[9vw]
+            md:text-[9.5vw]
+            lg:text-[9.5vw]
+            mt-6
+            sm:mt-4
+            md:-mt-5
+            "
           >
-            {title}
-          </motion.h1>
+            {title.toUpperCase()}
+          </h1>
         </motion.div>
       </motion.div>
 
