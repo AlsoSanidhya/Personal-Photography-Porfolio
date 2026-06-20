@@ -2,7 +2,6 @@ import React from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { PORTFOLIO_DATA } from '../data/portfolioData'
 import ContactButton from '../components/ui/ContactButton'
-import AvatarHero from '../components/ui/AvatarHero'
 
 export const HeroSection: React.FC = () => {
   const { name, title, tagline } = PORTFOLIO_DATA.personal
@@ -34,15 +33,6 @@ export const HeroSection: React.FC = () => {
       opacity: 1,
       y: 0,
       transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] as const, delay: 0.5 }
-    }
-  }
-
-  const portraitVariants = {
-    hidden: { opacity: 0, scale: 0.98 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1] as const, delay: 0.9 }
     }
   }
 
@@ -89,13 +79,6 @@ export const HeroSection: React.FC = () => {
         </div>
       </motion.nav>
 
-      {/* Hero Portrait/Avatar (Centered absolutely, halo floats behind it at z-5) */}
-      <motion.div
-        variants={portraitVariants}
-        className="absolute left-1/2 -translate-x-1/2 z-10 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0"
-      >
-        <AvatarHero name={name} />
-      </motion.div>
 
       {/* Hero Heading */}
       <motion.div variants={titleVariants} className="relative z-20 w-full mt-24 sm:mt-16 md:mt-12 overflow-hidden">

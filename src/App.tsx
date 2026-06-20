@@ -11,6 +11,7 @@ import MyWorldSection from './sections/MyWorldSection'
 import StoriesSection from './sections/StoriesSection'
 import ContactSection from './sections/ContactSection'
 import GlobalCameraMorph from './components/ui/GlobalCameraMorph'
+import GlobalAvatarMascot from './components/ui/GlobalAvatarMascot'
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -32,6 +33,7 @@ function App() {
       {!loading && (
         <>
           <GlobalCameraMorph scrollProgress={scrollYProgress} />
+          <GlobalAvatarMascot scrollProgress={scrollYProgress} />
 
           <ParticleField />
 
