@@ -5,85 +5,16 @@ interface GlobalAvatarMascotProps {
   scrollProgress: MotionValue<number>
 }
 
-// Client-side chroma-key helper to dynamically clear out dark vignette borders and make the background transparent
-const clearVignetteBackground = (img: HTMLImageElement): string => {
-  const canvas = document.createElement('canvas')
-  canvas.width = img.naturalWidth
-  canvas.height = img.naturalHeight
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return img.src
-  
-  ctx.drawImage(img, 0, 0)
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-  const data = imgData.data
-  
-  const centerX = canvas.width / 2
-  const centerY = canvas.height / 2
-  const maxDist = Math.sqrt(centerX * centerX + centerY * centerY)
-  
-  for (let i = 0; i < data.length; i += 4) {
-    const r = data[i]
-    const g = data[i + 1]
-    const b = data[i + 2]
-    
-    // Pixel coordinates
-    const pixelIndex = i / 4
-    const py = Math.floor(pixelIndex / canvas.width)
-    const px = pixelIndex % canvas.width
-    
-    // Normalized distance from center (0.0 to 1.0)
-    const dx = px - centerX
-    const dy = py - centerY
-    const dist = Math.sqrt(dx * dx + dy * dy) / maxDist
-    
-    // We scale the darkness threshold based on the distance from the center.
-    // Near the center (avatar body), we use a minimal threshold to prevent hoodie holes.
-    // Near the corners/edges, we use a higher threshold to clear the vignette background.
-    const threshold = dist < 0.35 ? 12 : 12 + (dist - 0.35) * 65
-    
-    if (r < threshold && g < threshold && b < threshold * 1.25) {
-      const maxVal = Math.max(r, g, b)
-      // Soft transition feathering for alpha
-      const alpha = dist < 0.4 ? 255 : Math.min(255, Math.max(0, Math.floor((maxVal / threshold) * 255)))
-      data[i + 3] = alpha
-    }
-    
-    // Force fade-to-zero transparency at outer margins/corners to prevent bounding box edge lines
-    if (dist > 0.72) {
-      const edgeFactor = Math.max(0, (1.0 - dist) / (1.0 - 0.72))
-      data[i + 3] = Math.floor(data[i + 3] * edgeFactor)
-    }
-  }
-  
-  ctx.putImageData(imgData, 0, 0)
-  return canvas.toDataURL('image/png')
-}
-
 export const GlobalAvatarMascot: React.FC<GlobalAvatarMascotProps> = ({ scrollProgress }) => {
   const [isMobile, setIsMobile] = useState(false)
-  const [avatarSrc, setAvatarSrc] = useState<string>('/avatar.png')
 
-  // Track responsive screen sizing & process image on mount
+  // Track responsive screen sizing on mount
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768)
     }
     handleResize()
     window.addEventListener('resize', handleResize)
-
-    // Process local avatar image to remove square vignette background
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
-    img.src = '/avatar.png'
-    img.onload = () => {
-      try {
-        const transparentDataUrl = clearVignetteBackground(img)
-        setAvatarSrc(transparentDataUrl)
-      } catch (err) {
-        console.error('Error removing avatar background vignette:', err)
-      }
-    }
-
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
@@ -182,6 +113,7 @@ export const GlobalAvatarMascot: React.FC<GlobalAvatarMascotProps> = ({ scrollPr
       >
         {/* Continuous breathing floating wrapper */}
         <motion.div animate={floatAnimation} className="relative w-full h-full overflow-visible">
+          
           {/* Layer 1: Body (Full background silhouette layer) */}
           <motion.div
             style={{
@@ -192,9 +124,15 @@ export const GlobalAvatarMascot: React.FC<GlobalAvatarMascotProps> = ({ scrollPr
             className="absolute inset-0"
           >
             <img
-              src={avatarSrc}
+              src="/avatar.png"
               alt="Mascot Body Layer"
-              className="w-full h-full object-contain mix-blend-screen opacity-95 pointer-events-none"
+              style={{
+                background: 'transparent',
+                boxShadow: 'none',
+                border: 'none',
+                filter: 'none'
+              }}
+              className="w-full h-full object-contain opacity-95 pointer-events-none"
             />
           </motion.div>
 
@@ -208,13 +146,17 @@ export const GlobalAvatarMascot: React.FC<GlobalAvatarMascotProps> = ({ scrollPr
             className="absolute inset-0 overflow-visible"
           >
             <img
-              src={avatarSrc}
+              src="/avatar.png"
               alt="Mascot Head Layer"
               style={{
+                background: 'transparent',
+                boxShadow: 'none',
+                border: 'none',
+                filter: 'none',
                 maskImage: 'linear-gradient(to bottom, black 0%, black 16%, transparent 26%)',
                 WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 16%, transparent 26%)'
               }}
-              className="w-full h-full object-contain mix-blend-screen opacity-95 pointer-events-none"
+              className="w-full h-full object-contain opacity-95 pointer-events-none"
             />
           </motion.div>
 
@@ -228,13 +170,17 @@ export const GlobalAvatarMascot: React.FC<GlobalAvatarMascotProps> = ({ scrollPr
             className="absolute inset-0 overflow-visible"
           >
             <img
-              src={avatarSrc}
+              src="/avatar.png"
               alt="Mascot Camera Layer"
               style={{
+                background: 'transparent',
+                boxShadow: 'none',
+                border: 'none',
+                filter: 'none',
                 maskImage: 'radial-gradient(circle 22% at 38% 58%, black 15%, transparent 100%)',
                 WebkitMaskImage: 'radial-gradient(circle 22% at 38% 58%, black 15%, transparent 100%)'
               }}
-              className="w-full h-full object-contain mix-blend-screen opacity-95 pointer-events-none"
+              className="w-full h-full object-contain opacity-95 pointer-events-none"
             />
           </motion.div>
         </motion.div>
