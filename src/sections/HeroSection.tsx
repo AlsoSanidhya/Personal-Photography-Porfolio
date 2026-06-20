@@ -2,9 +2,10 @@ import React from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { PORTFOLIO_DATA } from '../data/portfolioData'
 import ContactButton from '../components/ui/ContactButton'
+import AvatarHero from '../components/ui/AvatarHero'
 
 export const HeroSection: React.FC = () => {
-  const { name, title, tagline, portraitUrl } = PORTFOLIO_DATA.personal
+  const { name, title, tagline } = PORTFOLIO_DATA.personal
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -88,18 +89,12 @@ export const HeroSection: React.FC = () => {
         </div>
       </motion.nav>
 
-      {/* Hero Portrait (Centered absolutely, halo floats behind it at z-5) */}
+      {/* Hero Portrait/Avatar (Centered absolutely, halo floats behind it at z-5) */}
       <motion.div
         variants={portraitVariants}
         className="absolute left-1/2 -translate-x-1/2 z-10 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0"
       >
-        <div className="relative w-full aspect-[4/5]">
-          <img
-            src={portraitUrl}
-            alt={`${name} Portrait`}
-            className="w-full h-full object-cover rounded-[16px] sm:rounded-[24px] border border-[#F5F1E8]/10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] pointer-events-none"
-          />
-        </div>
+        <AvatarHero name={name} />
       </motion.div>
 
       {/* Hero Heading */}
