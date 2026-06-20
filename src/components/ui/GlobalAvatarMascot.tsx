@@ -64,13 +64,14 @@ export const GlobalAvatarMascot: React.FC<GlobalAvatarMascotProps> = ({ scrollPr
   // 3. Mouse-parallax calculations (driven by MotionValues to avoid React layout rerenders)
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-  const smoothMouseX = useSpring(mouseX, { damping: 25, stiffness: 120 })
-  const smoothMouseY = useSpring(mouseY, { damping: 25, stiffness: 120 })
+  const smoothMouseX = useSpring(mouseX, { stiffness: 80, damping: 25 })
+  const smoothMouseY = useSpring(mouseY, { stiffness: 80, damping: 25 })
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2)
-      const y = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2)
+      // Raw pixel difference from screen center
+      const x = e.clientX - window.innerWidth / 2
+      const y = e.clientY - window.innerHeight / 2
       mouseX.set(x)
       mouseY.set(y)
     }
@@ -79,14 +80,25 @@ export const GlobalAvatarMascot: React.FC<GlobalAvatarMascotProps> = ({ scrollPr
   }, [mouseX, mouseY])
 
   // Map mouse positions to small displacements for each 2.5D layer
-  const bodyParallaxX = useTransform(smoothMouseX, [-1, 1], [-4, 4])
-  const bodyParallaxY = useTransform(smoothMouseY, [-1, 1], [-4, 4])
+  // Maximum translateX: ±10px, Maximum translateY: ±6px
+  const bodyParallaxX = useTransform(smoothMouseX, (x) => Math.max(-3, Math.min(3, x * 0.004)))
+  const bodyParallaxY = useTransform(smoothMouseY, (y) => Math.max(-2, Math.min(2, y * 0.004)))
 
-  const headParallaxX = useTransform(smoothMouseX, [-1, 1], [-8, 8])
-  const headParallaxY = useTransform(smoothMouseY, [-1, 1], [-8, 8])
+  const headParallaxX = useTransform(smoothMouseX, (x) => Math.max(-7, Math.min(7, x * 0.009)))
+  const headParallaxY = useTransform(smoothMouseY, (y) => Math.max(-4, Math.min(4, y * 0.009)))
 
-  const cameraParallaxX = useTransform(smoothMouseX, [-1, 1], [-14, 14])
-  const cameraParallaxY = useTransform(smoothMouseY, [-1, 1], [-14, 14])
+  const cameraParallaxX = useTransform(smoothMouseX, (x) => Math.max(-10, Math.min(10, x * 0.014)))
+  const cameraParallaxY = useTransform(smoothMouseY, (y) => Math.max(-6, Math.min(6, y * 0.014)))
+
+  // Subtle 3D looking-towards-cursor tilt (clamped to max ±5deg Y, ±3deg X)
+  const rotateY = useTransform(smoothMouseX, (x) => {
+    const val = x * 0.01
+    return Math.max(-5, Math.min(5, val))
+  })
+  const rotateX = useTransform(smoothMouseY, (y) => {
+    const val = -y * 0.006 // Negate to tilt towards mouse
+    return Math.max(-3, Math.min(3, val))
+  })
 
   // Continuous breathing and idle floating keyframes
   const floatAnimation = {
@@ -99,7 +111,10 @@ export const GlobalAvatarMascot: React.FC<GlobalAvatarMascotProps> = ({ scrollPr
   }
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[45] flex items-center justify-center overflow-visible select-none">
+    <div 
+      style={{ perspective: '800px' }}
+      className="fixed inset-0 pointer-events-none z-[45] flex items-center justify-center overflow-visible select-none"
+    >
       {/* Scroll-driven outer transform wrapper */}
       <motion.div
         style={{
@@ -111,9 +126,16 @@ export const GlobalAvatarMascot: React.FC<GlobalAvatarMascotProps> = ({ scrollPr
         }}
         className="relative w-[280px] sm:w-[350px] md:w-[420px] lg:w-[480px] aspect-square flex items-center justify-center overflow-visible"
       >
-        {/* Continuous breathing floating wrapper */}
-        <motion.div animate={floatAnimation} className="relative w-full h-full overflow-visible">
-          
+        {/* Continuous breathing floating wrapper with subtle 3D cursor tilt */}
+        <motion.div 
+          animate={floatAnimation} 
+          style={{
+            rotateX,
+            rotateY,
+            transformStyle: 'preserve-3d'
+          }}
+          className="relative w-full h-full overflow-visible"
+        >
           {/* Layer 1: Body (Full background silhouette layer) */}
           <motion.div
             style={{
