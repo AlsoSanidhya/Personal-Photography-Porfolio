@@ -70,7 +70,7 @@ const StoryCard: React.FC<CardProps> = ({ story, index, progress, range, targetS
           scale,
           top: `calc(10vh + ${index * 28}px)`,
         }}
-        className="relative w-full max-w-5xl rounded-3xl border border-[#F5F1E8]/10 bg-[#0A0A0A] p-6 sm:p-8 md:p-12 shadow-2xl flex flex-col justify-between overflow-hidden"
+        className="story-card relative w-full max-w-5xl rounded-3xl border border-[#F5F1E8]/10 bg-[#0A0A0A] p-6 sm:p-8 md:p-12 shadow-2xl flex flex-col justify-between overflow-hidden"
       >
         {/* Top Row: Number, Category/Title, View Story Button */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">

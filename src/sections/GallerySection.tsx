@@ -64,7 +64,7 @@ export const GallerySection: React.FC = () => {
                 exit={{ opacity: 0, scale: 0.94 }}
                 transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
                 key={item.id}
-                className="break-inside-avoid relative group overflow-hidden rounded-2xl border border-[#F5F1E8]/5 shadow-2xl aspect-[4/5] sm:aspect-auto"
+                className="gallery-card break-inside-avoid relative group overflow-hidden rounded-2xl border border-[#F5F1E8]/5 shadow-2xl aspect-[4/5] sm:aspect-auto"
               >
                 <img
                   src={item.imageUrl}

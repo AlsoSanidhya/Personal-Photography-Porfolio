@@ -4,9 +4,9 @@ import FadeIn from '../components/ui/FadeIn'
 import AnimatedText from '../components/ui/AnimatedText'
 import ContactButton from '../components/ui/ContactButton'
 import ParallaxText from '../components/ui/ParallaxText'
+import ThreeDObject from '../components/ui/ThreeDSideObjects'
 
 export const AboutSection: React.FC = () => {
-  const { moon, object3d, lego, group3d } = PORTFOLIO_DATA.aboutAssets
   const { bio } = PORTFOLIO_DATA.personal
 
   const scrollToContact = () => {
@@ -19,54 +19,53 @@ export const AboutSection: React.FC = () => {
   return (
     <section
       id="about"
-      className="relative min-h-screen flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-32 md:py-44 bg-transparent z-10 select-none"
+      className="relative min-h-screen flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-32 md:py-44 bg-transparent z-10 select-none overflow-hidden"
     >
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />
 
-      {/* Floating 3D Corner Icons with lowered opacity and screen blending for a softer gallery feel */}
-      {/* Top Left - Moon */}
+      {/* Floating 3D Corner Canvas Objects - Top Left: Moon */}
       <FadeIn
         x={-80}
         y={0}
         delay={0.1}
         duration={0.9}
-        className="absolute top-[8%] left-[2%] sm:left-[4%] md:left-[6%] z-10 w-[100px] sm:w-[130px] md:w-[170px] pointer-events-none opacity-40 mix-blend-screen"
+        className="absolute top-[8%] left-[2%] sm:left-[4%] md:left-[6%] z-10 w-[110px] h-[110px] sm:w-[150px] sm:h-[150px] md:w-[210px] md:h-[210px] lg:w-[260px] lg:h-[260px] pointer-events-none opacity-80"
       >
-        <img src={moon} alt="3D Moon Icon" className="w-full h-auto animate-float-slow" />
+        <ThreeDObject type="moon" />
       </FadeIn>
 
-      {/* Bottom Left - 3D Object */}
+      {/* Floating 3D Corner Canvas Objects - Bottom Left: Torus Knot */}
       <FadeIn
         x={-80}
         y={0}
-        delay={0.25}
+        delay={0.2}
         duration={0.9}
-        className="absolute bottom-[10%] left-[4%] sm:left-[8%] md:left-[12%] z-10 w-[80px] sm:w-[110px] md:w-[140px] pointer-events-none opacity-30 mix-blend-screen"
+        className="absolute bottom-[10%] left-[4%] sm:left-[6%] md:left-[8%] z-10 w-[100px] h-[100px] sm:w-[130px] sm:h-[130px] md:w-[180px] md:h-[180px] lg:w-[230px] lg:h-[230px] pointer-events-none opacity-70"
       >
-        <img src={object3d} alt="3D Object" className="w-full h-auto animate-float-mid" />
+        <ThreeDObject type="object3d" />
       </FadeIn>
 
-      {/* Top Right - Lego */}
+      {/* Floating 3D Corner Canvas Objects - Top Right: Lego */}
       <FadeIn
         x={80}
         y={0}
         delay={0.15}
         duration={0.9}
-        className="absolute top-[8%] right-[2%] sm:right-[4%] md:right-[6%] z-10 w-[100px] sm:w-[130px] md:w-[170px] pointer-events-none opacity-35 mix-blend-screen"
+        className="absolute top-[8%] right-[2%] sm:right-[4%] md:right-[6%] z-10 w-[110px] h-[110px] sm:w-[150px] sm:h-[150px] md:w-[210px] md:h-[210px] lg:w-[260px] lg:h-[260px] pointer-events-none opacity-80"
       >
-        <img src={lego} alt="3D Lego Icon" className="w-full h-auto animate-float-mid" />
+        <ThreeDObject type="lego" />
       </FadeIn>
 
-      {/* Bottom Right - 3D Group */}
+      {/* Floating 3D Corner Canvas Objects - Bottom Right: Cluster Group */}
       <FadeIn
         x={80}
         y={0}
-        delay={0.3}
+        delay={0.25}
         duration={0.9}
-        className="absolute bottom-[10%] right-[4%] sm:right-[8%] md:right-[12%] z-10 w-[110px] sm:w-[145px] md:w-[180px] pointer-events-none opacity-40 mix-blend-screen"
+        className="absolute bottom-[10%] right-[4%] sm:right-[6%] md:right-[8%] z-10 w-[110px] h-[110px] sm:w-[145px] sm:h-[145px] md:w-[200px] md:h-[200px] lg:w-[250px] lg:h-[250px] pointer-events-none opacity-80"
       >
-        <img src={group3d} alt="3D Group" className="w-full h-auto animate-float-slow" />
+        <ThreeDObject type="group3d" />
       </FadeIn>
 
       {/* Center Content Block */}
