@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 
 interface Particle {
   x: number
@@ -14,14 +15,19 @@ interface Particle {
   dispY: number
 }
 
-export const ParticleField: React.FC = () => {
+interface ParticleFieldProps {
+  isReveal?: boolean
+}
+
+export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(() => 
+    typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false
+  )
   const mouseRef = useRef({ x: -9999, y: -9999 })
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReducedMotion(mediaQuery.matches)
     const listener = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
     mediaQuery.addEventListener('change', listener)
     return () => mediaQuery.removeEventListener('change', listener)
@@ -204,8 +210,11 @@ export const ParticleField: React.FC = () => {
   }, [reducedMotion])
 
   return (
-    <canvas
+    <motion.canvas
       ref={canvasRef}
+      initial={{ opacity: 0 }}
+      animate={isReveal ? { opacity: 1 } : { opacity: 0 }}
+      transition={{ duration: 1.5, ease: 'easeOut' }}
       className="fixed inset-0 pointer-events-none z-1"
       style={{ mixBlendMode: 'screen' }}
     />

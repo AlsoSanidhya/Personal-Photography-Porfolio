@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion'
 import { PORTFOLIO_DATA } from '../data/portfolioData'
 import type { StoryItem } from '../data/portfolioData'
 import LiveProjectButton from '../components/ui/LiveProjectButton'
@@ -9,7 +9,7 @@ import ParallaxText from '../components/ui/ParallaxText'
 interface CardProps {
   story: StoryItem
   index: number
-  progress: any
+  progress: MotionValue<number>
   range: [number, number]
   targetScale: number
 }

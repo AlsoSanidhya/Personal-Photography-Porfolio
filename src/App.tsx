@@ -1,4 +1,4 @@
-import { AnimatePresence, useScroll } from 'framer-motion'
+import { AnimatePresence, useScroll, motion } from 'framer-motion'
 import Preloader from './components/ui/Preloader'
 import { useEffect, useState } from 'react'
 import { PORTFOLIO_DATA } from './data/portfolioData'
@@ -13,29 +13,96 @@ import ContactSection from './sections/ContactSection'
 import GlobalCameraMorph from './components/ui/GlobalCameraMorph'
 
 function App() {
-  const [loading, setLoading] = useState(true)
+  const [sitePhase, setSitePhase] = useState<'preloader' | 'welcome' | 'reveal'>('preloader')
+  const [showHello, setShowHello] = useState(false)
 
   useEffect(() => {
     document.title = `${PORTFOLIO_DATA.personal.name} -- Photography Portfolio`
   }, [])
 
+  useEffect(() => {
+    if (sitePhase === 'welcome') {
+      const showTimer = setTimeout(() => {
+        setShowHello(true)
+      }, 50)
+
+      // Hello stays visible for 2 seconds, then starts fading out
+      const helloTimer = setTimeout(() => {
+        setShowHello(false)
+      }, 2050)
+
+      // Transition to reveal after Hello fade-out finishes (2s + 0.8s)
+      const phaseTimer = setTimeout(() => {
+        setSitePhase('reveal')
+      }, 2850)
+
+      return () => {
+        clearTimeout(showTimer)
+        clearTimeout(helloTimer)
+        clearTimeout(phaseTimer)
+      }
+    }
+  }, [sitePhase])
+
   const { scrollYProgress } = useScroll()
+
+  const isReveal = sitePhase === 'reveal'
 
   return (
     <div className="bg-[#050505] min-h-screen text-[#F5F1E8] select-none relative z-20">
+      {/* Global Preloader Phase */}
       <AnimatePresence mode="wait">
-        {loading && (
-          <Preloader onComplete={() => setLoading(false)} />
+        {sitePhase === 'preloader' && (
+          <Preloader onComplete={() => setSitePhase('welcome')} />
+        )}
+      </AnimatePresence>
+
+      {/* Global Apple-Inspired Welcome Overlay Phase */}
+      <AnimatePresence>
+        {sitePhase === 'welcome' && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.0, ease: 'easeInOut' }}
+            className="fixed inset-0 bg-[#000000] z-[9990] flex items-center justify-center overflow-hidden"
+          >
+            {/* Subtle premium backlight glow behind text */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.15 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.0 }}
+              className="absolute w-[350px] h-[350px] bg-white/10 rounded-full blur-[100px] pointer-events-none" 
+            />
+
+            <AnimatePresence>
+              {showHello && (
+                <motion.span
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.01 }}
+                  transition={{ 
+                    opacity: { duration: 0.8, ease: 'easeOut' },
+                    scale: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } 
+                  }}
+                  className="font-serif text-[13vw] sm:text-[9vw] md:text-[95px] lg:text-[115px] select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8]/90 to-[#B8B1A6]/50 bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(255,255,255,0.12)] tracking-[0.16em]"
+                >
+                  Hello
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.div>
         )}
       </AnimatePresence>
       
-      {!loading && (
+      {/* Main website components - always mounted for WebGL scene pre-compilation, opacity managed via isReveal */}
+      {sitePhase !== 'preloader' && (
         <>
-          <GlobalCameraMorph scrollProgress={scrollYProgress} />
+          <GlobalCameraMorph scrollProgress={scrollYProgress} isReveal={isReveal} />
 
-          <ParticleField />
+          <ParticleField isReveal={isReveal} />
 
-          <HeroSection />
+          <HeroSection isReveal={isReveal} />
           <MarqueeSection />
           <AboutSection />
           <GallerySection />

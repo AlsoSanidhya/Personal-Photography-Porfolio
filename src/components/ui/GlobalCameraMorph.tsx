@@ -4,9 +4,10 @@ import { MotionValue, motion } from 'framer-motion'
 
 interface GlobalCameraMorphProps {
   scrollProgress: MotionValue<number>
+  isReveal?: boolean
 }
 
-export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ scrollProgress }) => {
+export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ scrollProgress, isReveal = true }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const mouseRef = useRef({ x: 0, y: 0 })
@@ -214,8 +215,8 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ scrollProg
       const progress = scrollProgress.get()
 
       // --- SCROLL MORPH MATH ---
-      let ringsOpacity = 1.0
-      let ringsScaleVal = 1.0
+      const ringsOpacity = 1.0
+      let ringsScaleVal: number
       let bladesOpacity = 0.0
       let bladesAngle = 0.6 // closed
       let barrelOpacity = 0.0
@@ -356,11 +357,11 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ scrollProg
     <motion.div
       ref={containerRef}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      animate={isReveal ? { opacity: 1 } : { opacity: 0 }}
       transition={{
-        duration: 1.0,
+        duration: 1.5,
         ease: [0.22, 1, 0.36, 1],
-        delay: 0.6
+        delay: 0.8
       }}
       style={{
         position: 'fixed',

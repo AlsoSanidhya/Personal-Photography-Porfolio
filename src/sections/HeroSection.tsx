@@ -1,10 +1,53 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { PORTFOLIO_DATA } from '../data/portfolioData'
 import ContactButton from '../components/ui/ContactButton'
 
-export const HeroSection: React.FC = () => {
-  const { name, title, tagline } = PORTFOLIO_DATA.personal
+interface HeroSectionProps {
+  isReveal?: boolean
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) => {
+  const { tagline } = PORTFOLIO_DATA.personal
+
+  const [typingStarted, setTypingStarted] = useState(false)
+  const [typingComplete, setTypingComplete] = useState(false)
+  const [typedText, setTypedText] = useState('')
+  const fullText = "HI, I'M SANIDHYA"
+
+  useEffect(() => {
+    if (!isReveal) return
+
+    // Start typewriter typing 1.8 seconds after reveal starts
+    const timer = setTimeout(() => {
+      setTypingStarted(true)
+    }, 1800)
+
+    return () => clearTimeout(timer)
+  }, [isReveal])
+
+  useEffect(() => {
+    if (!typingStarted) return
+
+    let currentIndex = 0
+    const duration = 2200 // 2.2 seconds total typing duration
+    const stepTime = Math.floor(duration / fullText.length) // ~146ms per character
+
+    const interval = setInterval(() => {
+      currentIndex++
+      setTypedText(fullText.slice(0, currentIndex))
+      
+      if (currentIndex >= fullText.length) {
+        clearInterval(interval)
+        // Remove cursor shortly after typing finishes
+        setTimeout(() => {
+          setTypingComplete(true)
+        }, 150)
+      }
+    }, stepTime)
+
+    return () => clearInterval(interval)
+  }, [typingStarted])
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -23,16 +66,15 @@ export const HeroSection: React.FC = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] as const, delay: 0.1 }
+      transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] as const, delay: 1.0 }
     }
   }
 
   const titleVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] as const, delay: 0.5 }
+      transition: { duration: 0.6, ease: 'easeOut' as const, delay: 1.6 }
     }
   }
 
@@ -41,7 +83,7 @@ export const HeroSection: React.FC = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const, delay: 1.2 }
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const }
     }
   }
 
@@ -49,7 +91,7 @@ export const HeroSection: React.FC = () => {
     <motion.section
       id="hero"
       initial="hidden"
-      animate="visible"
+      animate={isReveal ? 'visible' : 'hidden'}
       className="relative h-screen flex flex-col justify-between bg-transparent z-10 px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 select-none"
     >
       {/* Background Cinematic Glow */}
@@ -61,10 +103,10 @@ export const HeroSection: React.FC = () => {
         className="w-full relative z-30 flex justify-between items-center pt-6 md:pt-8 text-[#B8B1A6]"
       >
         <span
-          className="font-serif tracking-widest text-xl md:text-2xl font-medium text-[#F5F1E8] cursor-pointer"
+          className="font-serif tracking-[0.14em] text-lg sm:text-xl md:text-2xl font-medium text-[#F5F1E8] hover:tracking-[0.18em] hover:opacity-80 transition-all duration-500 ease-out cursor-pointer"
           onClick={() => scrollToSection('hero')}
         >
-          {name}.
+          BEYOND THE FRAME
         </span>
         <div className="flex gap-6 sm:gap-10 md:gap-14">
           {['About', 'Gallery', 'Stories', 'Contact'].map((item) => (
@@ -78,7 +120,6 @@ export const HeroSection: React.FC = () => {
           ))}
         </div>
       </motion.nav>
-
 
       {/* Hero Heading */}
       <motion.div variants={titleVariants} className="relative z-20 w-full mt-24 sm:mt-16 md:mt-12 overflow-hidden">
@@ -105,7 +146,18 @@ export const HeroSection: React.FC = () => {
             md:-mt-5
             "
           >
-            {title.toUpperCase()}
+            {!typingStarted ? '\u200B' : (
+              <>
+                {typedText}
+                {!typingComplete && (
+                  <motion.span
+                    animate={{ opacity: [1, 0] }}
+                    transition={{ duration: 0.4, repeat: Infinity, repeatType: 'reverse' as const, ease: 'easeInOut' }}
+                    className="inline-block w-[3px] sm:w-[4px] md:w-[6px] lg:w-[8px] h-[0.75em] bg-[#8B5CF6] align-middle ml-2"
+                  />
+                )}
+              </>
+            )}
           </h1>
         </motion.div>
       </motion.div>
@@ -113,7 +165,11 @@ export const HeroSection: React.FC = () => {
       {/* Bottom Bar */}
       <div className="relative z-25 flex justify-between items-end w-full">
         {/* Left tagline */}
-        <motion.div variants={bottomElementVariants}>
+        <motion.div
+          variants={bottomElementVariants}
+          initial="hidden"
+          animate={typingComplete ? 'visible' : 'hidden'}
+        >
           <p className="font-sans font-light tracking-[0.08em] leading-relaxed text-[#B8B1A6] uppercase max-w-[160px] sm:max-w-[220px] md:max-w-[280px]" style={{ fontSize: 'clamp(0.65rem, 1vw, 0.85rem)' }}>
             {tagline}
           </p>
@@ -122,6 +178,8 @@ export const HeroSection: React.FC = () => {
         {/* Scroll Indicator */}
         <motion.div
           variants={bottomElementVariants}
+          initial="hidden"
+          animate={typingComplete ? 'visible' : 'hidden'}
           className="absolute left-1/2 -translate-x-1/2 bottom-2 hidden md:flex flex-col items-center gap-2 text-[#B8B1A6]/40 text-[9px] tracking-[0.25em] uppercase"
         >
           <span>Scroll</span>
@@ -135,7 +193,11 @@ export const HeroSection: React.FC = () => {
         </motion.div>
 
         {/* Right Button */}
-        <motion.div variants={bottomElementVariants}>
+        <motion.div
+          variants={bottomElementVariants}
+          initial="hidden"
+          animate={typingComplete ? 'visible' : 'hidden'}
+        >
           <ContactButton onClick={() => scrollToSection('contact')} />
         </motion.div>
       </div>
