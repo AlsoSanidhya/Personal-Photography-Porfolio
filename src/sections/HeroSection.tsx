@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { PORTFOLIO_DATA } from '../data/portfolioData'
 import ContactButton from '../components/ui/ContactButton'
 
 interface HeroSectionProps {
@@ -8,46 +7,29 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) => {
-  const { tagline } = PORTFOLIO_DATA.personal
-
-  const [typingStarted, setTypingStarted] = useState(false)
   const [typingComplete, setTypingComplete] = useState(false)
-  const [typedText, setTypedText] = useState('')
-  const fullText = "HI, I'M SANIDHYA"
+  
+  const linesOfWords = [
+    [
+      { text: "EVERY", style: "ivory" },
+      { text: "FRAME", style: "gradient" }
+    ],
+    [
+      { text: "TELLS A", style: "ivory" },
+      { text: "STORY.", style: "gradient-glow" }
+    ]
+  ]
 
   useEffect(() => {
     if (!isReveal) return
 
-    // Start typewriter typing 1.8 seconds after reveal starts
-    const timer = setTimeout(() => {
-      setTypingStarted(true)
-    }, 1800)
+    // Trigger typing complete after 4.1 seconds (1.6s delay before children start + 2.5s reveal duration)
+    const completeTimer = setTimeout(() => {
+      setTypingComplete(true)
+    }, 4100)
 
-    return () => clearTimeout(timer)
+    return () => clearTimeout(completeTimer)
   }, [isReveal])
-
-  useEffect(() => {
-    if (!typingStarted) return
-
-    let currentIndex = 0
-    const duration = 2200 // 2.2 seconds total typing duration
-    const stepTime = Math.floor(duration / fullText.length) // ~146ms per character
-
-    const interval = setInterval(() => {
-      currentIndex++
-      setTypedText(fullText.slice(0, currentIndex))
-      
-      if (currentIndex >= fullText.length) {
-        clearInterval(interval)
-        // Remove cursor shortly after typing finishes
-        setTimeout(() => {
-          setTypingComplete(true)
-        }, 150)
-      }
-    }, stepTime)
-
-    return () => clearInterval(interval)
-  }, [typingStarted])
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -70,20 +52,57 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
     }
   }
 
-  const titleVariants = {
-    hidden: { opacity: 0 },
+  const containerVariants = {
+    hidden: {},
     visible: {
-      opacity: 1,
-      transition: { duration: 0.6, ease: 'easeOut' as const, delay: 1.6 }
+      transition: {
+        staggerChildren: 0.25, // 4 items * 0.25s = 0.75s stagger delay
+        delayChildren: 1.6, // Starts after Hello overlay exits
+      }
     }
   }
 
-  const bottomElementVariants = {
+  const wordVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 20,
+      filter: 'blur(5px)'
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: { 
+        duration: 1.1, 
+        ease: [0.25, 1, 0.5, 1] as const
+      }
+    }
+  }
+
+  const subtitleVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const }
+      transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] as const, delay: 0.3 }
+    }
+  }
+
+  const buttonVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const, delay: 0.6 }
+    }
+  }
+
+  const scrollVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+      opacity: 0.4,
+      y: 0,
+      transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] as const, delay: 0.9 }
     }
   }
 
@@ -92,7 +111,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
       id="hero"
       initial="hidden"
       animate={isReveal ? 'visible' : 'hidden'}
-      className="relative h-screen flex flex-col justify-between bg-transparent z-10 px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 select-none"
+      className="relative h-screen flex flex-col justify-between bg-transparent z-10 px-6 pb-7 sm:pb-8 md:pb-10 select-none"
     >
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />
@@ -100,10 +119,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
       {/* Navbar */}
       <motion.nav
         variants={navVariants}
-        className="w-full relative z-30 flex justify-between items-center pt-6 md:pt-8 text-[#B8B1A6]"
+        className="w-full relative z-30 flex justify-between items-center pt-6 text-[#B8B1A6]"
       >
         <span
-          className="font-serif tracking-[0.14em] text-lg sm:text-xl md:text-2xl font-medium text-[#F5F1E8] hover:tracking-[0.18em] hover:opacity-80 transition-all duration-500 ease-out cursor-pointer"
+          className="font-serif tracking-[0.14em] text-sm sm:text-base md:text-lg font-medium text-[#F5F1E8] hover:tracking-[0.18em] hover:opacity-80 transition-all duration-500 ease-out cursor-pointer"
           onClick={() => scrollToSection('hero')}
         >
           BEYOND THE FRAME
@@ -122,42 +141,55 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
       </motion.nav>
 
       {/* Hero Heading */}
-      <motion.div variants={titleVariants} className="relative z-20 w-full mt-24 sm:mt-16 md:mt-12 overflow-hidden">
-        <motion.div style={{ y: titleY, willChange: 'transform' }}>
+      <motion.div 
+        variants={containerVariants}
+        className="relative z-20 w-full flex-grow flex items-center justify-center overflow-hidden my-4"
+      >
+        <motion.div style={{ y: titleY, willChange: 'transform' }} className="w-full">
           <h1
             className="
-            luxury-sweep
             hero-heading
             font-serif
             font-medium
-            uppercase
-            tracking-[0.05em]
-            leading-none
             text-center
-            sm:text-left
-            whitespace-nowrap
+            mx-auto
             w-full
-            text-[8.5vw]
-            sm:text-[9vw]
-            md:text-[9.5vw]
-            lg:text-[9.5vw]
-            mt-6
-            sm:mt-4
-            md:-mt-5
+            tracking-[-0.04em]
+            text-[clamp(3rem,8vw,5rem)]
+            md:text-[clamp(7rem,10vw,10rem)]
             "
+            style={{ 
+              lineHeight: '0.85',
+              fontFamily: "'Canela', 'PP Editorial New', 'Saol Display', 'IvyPresto', 'Cormorant Garamond', serif"
+            }}
           >
-            {!typingStarted ? '\u200B' : (
-              <>
-                {typedText}
-                {!typingComplete && (
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ duration: 0.4, repeat: Infinity, repeatType: 'reverse' as const, ease: 'easeInOut' }}
-                    className="inline-block w-[3px] sm:w-[4px] md:w-[6px] lg:w-[8px] h-[0.75em] bg-[#8B5CF6] align-middle ml-2"
-                  />
-                )}
-              </>
-            )}
+            {linesOfWords.map((line, lineIndex) => (
+              <span key={lineIndex} className="block overflow-hidden py-2 sm:py-3">
+                {line.map((word, wordIndex) => (
+                  <React.Fragment key={wordIndex}>
+                    {wordIndex > 0 && "\u00A0"}
+                    
+                    {word.style === "gradient" || word.style === "gradient-glow" ? (
+                      <span style={{ filter: 'drop-shadow(0 0 18px rgba(184,145,255,0.15))' }} className="inline-block">
+                        <motion.span 
+                          variants={wordVariants} 
+                          className="animate-text-gradient inline-block"
+                        >
+                          {word.text}
+                        </motion.span>
+                      </span>
+                    ) : (
+                      <motion.span 
+                        variants={wordVariants} 
+                        className="inline-block text-[#F8F5EF]"
+                      >
+                        {word.text}
+                      </motion.span>
+                    )}
+                  </React.Fragment>
+                ))}
+              </span>
+            ))}
           </h1>
         </motion.div>
       </motion.div>
@@ -166,18 +198,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
       <div className="relative z-25 flex justify-between items-end w-full">
         {/* Left tagline */}
         <motion.div
-          variants={bottomElementVariants}
+          variants={subtitleVariants}
           initial="hidden"
           animate={typingComplete ? 'visible' : 'hidden'}
         >
-          <p className="font-sans font-light tracking-[0.08em] leading-relaxed text-[#B8B1A6] uppercase max-w-[160px] sm:max-w-[220px] md:max-w-[280px]" style={{ fontSize: 'clamp(0.65rem, 1vw, 0.85rem)' }}>
-            {tagline}
+          <p className="font-sans font-light tracking-[0.08em] leading-relaxed text-[#B8B1A6] uppercase max-w-[280px]" style={{ fontSize: 'clamp(0.65rem, 1vw, 0.85rem)' }}>
+            Photography &bull; Design &bull; Creative Technology
           </p>
         </motion.div>
 
         {/* Scroll Indicator */}
         <motion.div
-          variants={bottomElementVariants}
+          variants={scrollVariants}
           initial="hidden"
           animate={typingComplete ? 'visible' : 'hidden'}
           className="absolute left-1/2 -translate-x-1/2 bottom-2 hidden md:flex flex-col items-center gap-2 text-[#B8B1A6]/40 text-[9px] tracking-[0.25em] uppercase"
@@ -194,7 +226,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
 
         {/* Right Button */}
         <motion.div
-          variants={bottomElementVariants}
+          variants={buttonVariants}
           initial="hidden"
           animate={typingComplete ? 'visible' : 'hidden'}
         >

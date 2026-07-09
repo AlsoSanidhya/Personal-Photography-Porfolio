@@ -26,15 +26,15 @@ function App() {
         setShowHello(true)
       }, 50)
 
-      // Hello stays visible for 2 seconds, then starts fading out
+      // Hello stays visible for 2 seconds (0.6s fade-in completes at 650ms, holds for 2.0s)
       const helloTimer = setTimeout(() => {
         setShowHello(false)
-      }, 2050)
+      }, 2650)
 
-      // Transition to reveal after Hello fade-out finishes (2s + 0.8s)
+      // Transition to reveal after Hello fade-out finishes (2.65s + 0.8s)
       const phaseTimer = setTimeout(() => {
         setSitePhase('reveal')
-      }, 2850)
+      }, 3450)
 
       return () => {
         clearTimeout(showTimer)
@@ -78,14 +78,17 @@ function App() {
             <AnimatePresence>
               {showHello && (
                 <motion.span
-                  initial={{ opacity: 0, scale: 0.95 }}
+                  initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.01 }}
+                  exit={{ opacity: 0, scale: 1.0 }}
                   transition={{ 
-                    opacity: { duration: 0.8, ease: 'easeOut' },
-                    scale: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } 
+                    opacity: { duration: 0.6, ease: 'easeOut' },
+                    scale: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } 
                   }}
-                  className="font-serif text-[13vw] sm:text-[9vw] md:text-[95px] lg:text-[115px] select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8]/90 to-[#B8B1A6]/50 bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(255,255,255,0.12)] tracking-[0.16em]"
+                  className="font-serif select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8]/90 to-[#B8B1A6]/50 bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(255,255,255,0.12)] tracking-[0.16em]"
+                  style={{
+                    fontSize: 'clamp(76px, 8vw, 110px)'
+                  }}
                 >
                   Hello
                 </motion.span>

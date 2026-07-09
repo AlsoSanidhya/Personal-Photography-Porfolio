@@ -66,6 +66,32 @@ h1, h2, h3, h4, h5, h6, .hero-heading {
   }
 }
 
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-text-gradient {
+  background: linear-gradient(
+    135deg,
+    #B68DFF 0%,
+    #FFFFFF 50%,
+    #B68DFF 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 9s ease infinite;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
