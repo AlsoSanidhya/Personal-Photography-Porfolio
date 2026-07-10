@@ -54,20 +54,7 @@ import marquee21 from '../assets/images/marquee/marquee-21.jpg'
 export interface GalleryItem {
   id: string
   title: string
-  category: 'Portraits' | 'Street' | 'Landscapes' | 'Edits'
   imageUrl: string
-}
-
-export interface StoryItem {
-  id: string
-  number: string
-  category: string
-  title: string
-  images: {
-    col1Img1: string
-    col1Img2: string
-    col2Img: string
-  }
 }
 
 export interface SocialLink {
@@ -85,7 +72,7 @@ export const PORTFOLIO_DATA = {
     portraitUrl: heroPortrait,
     
     bio: `I am a B.Tech CSE (AI & ML) student who enjoys exploring different creative fields. Photography is one of my favorite hobbies, but it is not the only thing that defines me. I am interested in technology, editing, design, content creation, and learning new skills.
-
+ 
 I enjoy experimenting with ideas, building projects, and exploring different creative outlets. Rather than being an expert in one thing, I see myself as someone who is constantly learning, creating, and growing.`,
     
     email: 'sheeshsanidhya@gmail.com'
@@ -106,90 +93,91 @@ I enjoy experimenting with ideas, building projects, and exploring different cre
 
   gallery: [
     {
-      id: 'n1',
+      id: 'g1',
       title: 'Misty Mountains',
-      category: 'Landscapes',
       imageUrl: galleryNature1
     },
     {
-      id: 's1',
+      id: 'g2',
+      title: 'Highland Trails',
+      imageUrl: storyMountainsTall
+    },
+    {
+      id: 'g3',
       title: 'Neon Tokyo Night',
-      category: 'Street',
       imageUrl: galleryStreet1
     },
     {
-      id: 't1',
+      id: 'g4',
+      title: 'Neon Reflections',
+      imageUrl: storyCityTall
+    },
+    {
+      id: 'g5',
       title: 'Desert Wanderer',
-      category: 'Portraits',
       imageUrl: galleryTravel1
     },
     {
-      id: 'l1',
+      id: 'g6',
+      title: 'Coastal Wanderlust',
+      imageUrl: storyTravel1
+    },
+    {
+      id: 'g7',
       title: 'Warm Brew & Film',
-      category: 'Edits',
       imageUrl: galleryLifestyle1
     },
     {
-      id: 'n2',
+      id: 'g8',
+      title: 'Alpenglow Ridges',
+      imageUrl: storyMountains1
+    },
+    {
+      id: 'g9',
       title: 'Whispering Woods',
-      category: 'Landscapes',
       imageUrl: galleryNature2
     },
     {
-      id: 's2',
+      id: 'g10',
+      title: 'Nomad Chronicles',
+      imageUrl: storyTravelTall
+    },
+    {
+      id: 'g11',
       title: 'Golden Hour Crossing',
-      category: 'Street',
       imageUrl: galleryStreet2
     },
     {
-      id: 't2',
+      id: 'g12',
+      title: 'Metropolis Lights',
+      imageUrl: storyCity1
+    },
+    {
+      id: 'g13',
       title: 'Venice Waterways',
-      category: 'Portraits',
       imageUrl: galleryTravel2
     },
     {
-      id: 'l2',
+      id: 'g14',
+      title: 'Summit Solitude',
+      imageUrl: storyMountains2
+    },
+    {
+      id: 'g15',
       title: 'Creative Mindspace',
-      category: 'Edits',
       imageUrl: galleryLifestyle2
+    },
+    {
+      id: 'g16',
+      title: 'Urban Convergence',
+      imageUrl: storyCity2
+    },
+    {
+      id: 'g17',
+      title: 'Ancient Pathways',
+      imageUrl: storyTravel2
     }
   ] as GalleryItem[],
-
-  stories: [
-    {
-      id: 'story-1',
-      number: '01',
-      category: 'NATURE',
-      title: 'Mountains',
-      images: {
-        col1Img1: storyMountains1,
-        col1Img2: storyMountains2,
-        col2Img: storyMountainsTall
-      }
-    },
-    {
-      id: 'story-2',
-      number: '02',
-      category: 'STREET',
-      title: 'City Life',
-      images: {
-        col1Img1: storyCity1,
-        col1Img2: storyCity2,
-        col2Img: storyCityTall
-      }
-    },
-    {
-      id: 'story-3',
-      number: '03',
-      category: 'TRAVEL',
-      title: 'Travel Diaries',
-      images: {
-        col1Img1: storyTravel1,
-        col1Img2: storyTravel2,
-        col2Img: storyTravelTall
-      }
-    }
-  ] as StoryItem[],
 
   socials: [
     { 

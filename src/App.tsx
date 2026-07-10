@@ -8,7 +8,6 @@ import MarqueeSection from './sections/MarqueeSection'
 import AboutSection from './sections/AboutSection'
 import GallerySection from './sections/GallerySection'
 import MyWorldSection from './sections/MyWorldSection'
-import StoriesSection from './sections/StoriesSection'
 import ContactSection from './sections/ContactSection'
 import GlobalCameraMorph from './components/ui/GlobalCameraMorph'
 
@@ -110,7 +109,6 @@ function App() {
           <AboutSection />
           <GallerySection />
           <MyWorldSection />
-          <StoriesSection />
           <ContactSection />
         </>
       )}

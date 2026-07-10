@@ -128,7 +128,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
           BEYOND THE FRAME
         </span>
         <div className="flex gap-6 sm:gap-10 md:gap-14">
-          {['About', 'Gallery', 'Stories', 'Contact'].map((item) => (
+          {['About', 'Gallery', 'Contact'].map((item) => (
             <button
               key={item}
               onClick={() => scrollToSection(item.toLowerCase())}
