@@ -19,7 +19,7 @@ export const AboutSection: React.FC = () => {
   return (
     <section
       id="about"
-      className="relative min-h-screen flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-32 md:py-44 bg-transparent z-10 select-none overflow-hidden"
+      className="relative min-h-[100dvh] flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-32 md:py-44 bg-transparent z-10 select-none overflow-hidden"
     >
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />
@@ -30,7 +30,7 @@ export const AboutSection: React.FC = () => {
         y={0}
         delay={0.1}
         duration={0.9}
-        className="absolute top-[8%] left-[2%] sm:left-[4%] md:left-[6%] z-10 w-[110px] h-[110px] sm:w-[150px] sm:h-[150px] md:w-[210px] md:h-[210px] lg:w-[260px] lg:h-[260px] pointer-events-none opacity-80"
+        className="hidden lg:block absolute top-[8%] left-[2%] sm:left-[4%] md:left-[6%] z-10 w-[110px] h-[110px] sm:w-[150px] sm:h-[150px] md:w-[210px] md:h-[210px] lg:w-[260px] lg:h-[260px] pointer-events-none opacity-80"
       >
         <ThreeDObject type="moon" />
       </FadeIn>
@@ -41,7 +41,7 @@ export const AboutSection: React.FC = () => {
         y={0}
         delay={0.2}
         duration={0.9}
-        className="absolute bottom-[10%] left-[4%] sm:left-[6%] md:left-[8%] z-10 w-[100px] h-[100px] sm:w-[130px] sm:h-[130px] md:w-[180px] md:h-[180px] lg:w-[230px] lg:h-[230px] pointer-events-none opacity-70"
+        className="hidden lg:block absolute bottom-[10%] left-[4%] sm:left-[6%] md:left-[8%] z-10 w-[100px] h-[100px] sm:w-[130px] sm:h-[130px] md:w-[180px] md:h-[180px] lg:w-[230px] lg:h-[230px] pointer-events-none opacity-70"
       >
         <ThreeDObject type="object3d" />
       </FadeIn>
@@ -52,7 +52,7 @@ export const AboutSection: React.FC = () => {
         y={0}
         delay={0.15}
         duration={0.9}
-        className="absolute top-[8%] right-[2%] sm:right-[4%] md:right-[6%] z-10 w-[110px] h-[110px] sm:w-[150px] sm:h-[150px] md:w-[210px] md:h-[210px] lg:w-[260px] lg:h-[260px] pointer-events-none opacity-80"
+        className="hidden lg:block absolute top-[8%] right-[2%] sm:right-[4%] md:right-[6%] z-10 w-[110px] h-[110px] sm:w-[150px] sm:h-[150px] md:w-[210px] md:h-[210px] lg:w-[260px] lg:h-[260px] pointer-events-none opacity-80"
       >
         <ThreeDObject type="lego" />
       </FadeIn>
@@ -63,7 +63,7 @@ export const AboutSection: React.FC = () => {
         y={0}
         delay={0.25}
         duration={0.9}
-        className="absolute bottom-[10%] right-[4%] sm:right-[6%] md:right-[8%] z-10 w-[110px] h-[110px] sm:w-[145px] sm:h-[145px] md:w-[200px] md:h-[200px] lg:w-[250px] lg:h-[250px] pointer-events-none opacity-80"
+        className="hidden lg:block absolute bottom-[10%] right-[4%] sm:right-[6%] md:right-[8%] z-10 w-[110px] h-[110px] sm:w-[145px] sm:h-[145px] md:w-[200px] md:h-[200px] lg:w-[250px] lg:h-[250px] pointer-events-none opacity-80"
       >
         <ThreeDObject type="group3d" />
       </FadeIn>
@@ -85,6 +85,14 @@ export const AboutSection: React.FC = () => {
             text={bio}
             className="text-[#F5F1E8] font-sans font-light tracking-[0.03em] leading-relaxed max-w-[620px] text-[1.05rem] sm:text-[1.2rem] md:text-[1.25rem]"
           />
+        </div>
+
+        {/* Mobile Image Grid (Hidden on Desktop) */}
+        <div className="grid lg:hidden grid-cols-2 gap-x-2 gap-y-12 sm:gap-x-8 w-full max-w-[360px] sm:max-w-[480px] mx-auto mb-20 px-2">
+          <div className="w-full aspect-[4/5]"><ThreeDObject type="moon" /></div>
+          <div className="w-full aspect-[4/5] mt-10"><ThreeDObject type="lego" /></div>
+          <div className="w-full aspect-[4/5]"><ThreeDObject type="object3d" /></div>
+          <div className="w-full aspect-[4/5] mt-10"><ThreeDObject type="group3d" /></div>
         </div>
 
         {/* Contact CTA */}

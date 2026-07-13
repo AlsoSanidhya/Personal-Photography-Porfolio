@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { HERO_SLIDESHOW_IMAGES } from '../data/portfolioData'
 import ContactButton from '../components/ui/ContactButton'
+import MobileMenu from '../components/ui/MobileMenu'
 
 interface HeroSectionProps {
   isReveal?: boolean
@@ -8,6 +10,7 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) => {
   const [typingComplete, setTypingComplete] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0)
   
   const linesOfWords = [
     [
@@ -29,6 +32,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
     }, 4100)
 
     return () => clearTimeout(completeTimer)
+  }, [isReveal])
+
+  // Slideshow effect
+  useEffect(() => {
+    if (!isReveal || HERO_SLIDESHOW_IMAGES.length === 0) return
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDESHOW_IMAGES.length)
+    }, 6000)
+
+    return () => clearInterval(interval)
   }, [isReveal])
 
   const scrollToSection = (id: string) => {
@@ -111,10 +125,34 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
       id="hero"
       initial="hidden"
       animate={isReveal ? 'visible' : 'hidden'}
-      className="relative h-screen flex flex-col justify-between bg-transparent z-10 px-6 pb-7 sm:pb-8 md:pb-10 select-none"
+      className="relative w-full min-h-[100dvh] flex flex-col justify-between px-5 sm:px-8 md:px-10 pb-6 overflow-hidden select-none"
+      style={{ paddingTop: 'calc(1.5rem + var(--safe-area-inset-top))' }}
     >
-      {/* Background Cinematic Glow */}
-      <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />
+      {/* Background Slideshow with Ken Burns Effect */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-[#050505]">
+        <AnimatePresence initial={false}>
+          {HERO_SLIDESHOW_IMAGES.length > 0 && (
+              <motion.img
+                key={currentSlide}
+                src={HERO_SLIDESHOW_IMAGES[currentSlide]}
+                alt="Hero Background"
+                initial={{ opacity: 0, scale: 1.0 }}
+                animate={{ opacity: 0.5, scale: 1.08 }}
+                exit={{ opacity: 0, scale: 1.1 }}
+                transition={{
+                  opacity: { duration: 1.5, ease: "easeInOut" },
+                  scale: { duration: 7.5, ease: "linear" }
+                }}
+                className="absolute inset-0 w-full h-full object-cover"
+                loading={currentSlide === 0 ? "eager" : "lazy"}
+                fetchPriority={currentSlide === 0 ? "high" : "auto"}
+                decoding={currentSlide === 0 ? "sync" : "async"}
+              />
+          )}
+        </AnimatePresence>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80 z-10" />
+        <div className="absolute inset-0 cinematic-glow z-10" />
+      </div>
 
       {/* Navbar */}
       <motion.nav
@@ -127,7 +165,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
         >
           BEYOND THE FRAME
         </span>
-        <div className="flex gap-6 sm:gap-10 md:gap-14">
+        <div className="hidden md:flex gap-6 sm:gap-10 md:gap-14">
           {['About', 'Gallery', 'Contact'].map((item) => (
             <button
               key={item}
@@ -138,6 +176,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
             </button>
           ))}
         </div>
+        <MobileMenu onNavigate={scrollToSection} />
       </motion.nav>
 
       {/* Hero Heading */}
@@ -195,12 +234,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
       </motion.div>
 
       {/* Bottom Bar */}
-      <div className="relative z-25 flex justify-between items-end w-full">
+      <div className="relative z-25 flex flex-col md:flex-row justify-between items-center md:items-end w-full gap-6 md:gap-0 pb-4 md:pb-0">
         {/* Left tagline */}
         <motion.div
           variants={subtitleVariants}
           initial="hidden"
           animate={typingComplete ? 'visible' : 'hidden'}
+          className="order-2 md:order-1 text-center md:text-left"
         >
           <p className="font-sans font-light tracking-[0.08em] leading-relaxed text-[#B8B1A6] uppercase max-w-[280px]" style={{ fontSize: 'clamp(0.65rem, 1vw, 0.85rem)' }}>
             Photography &bull; Design &bull; Creative Technology
@@ -212,7 +252,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
           variants={scrollVariants}
           initial="hidden"
           animate={typingComplete ? 'visible' : 'hidden'}
-          className="absolute left-1/2 -translate-x-1/2 bottom-2 hidden md:flex flex-col items-center gap-2 text-[#B8B1A6]/40 text-[9px] tracking-[0.25em] uppercase"
+          className="absolute left-1/2 -translate-x-1/2 bottom-12 md:bottom-2 hidden md:flex flex-col items-center gap-2 text-[#B8B1A6]/40 text-[9px] tracking-[0.25em] uppercase order-3 md:order-2"
         >
           <span>Scroll</span>
           <motion.div
@@ -229,6 +269,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
           variants={buttonVariants}
           initial="hidden"
           animate={typingComplete ? 'visible' : 'hidden'}
+          className="order-1 md:order-3"
         >
           <ContactButton onClick={() => scrollToSection('contact')} />
         </motion.div>

@@ -1,4 +1,5 @@
-import { AnimatePresence, useScroll, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ReactLenis } from 'lenis/react'
 import Preloader from './components/ui/Preloader'
 import { useEffect, useState } from 'react'
 import { PORTFOLIO_DATA } from './data/portfolioData'
@@ -43,12 +44,11 @@ function App() {
     }
   }, [sitePhase])
 
-  const { scrollYProgress } = useScroll()
-
   const isReveal = sitePhase === 'reveal'
 
   return (
-    <div className="bg-[#050505] min-h-screen text-[#F5F1E8] select-none relative z-20">
+    <ReactLenis root options={{ lerp: 0.08, smoothWheel: true }}>
+      <div className="bg-[#050505] min-h-screen text-[#F5F1E8] select-none relative z-20">
       {/* Global Preloader Phase */}
       <AnimatePresence mode="wait">
         {sitePhase === 'preloader' && (
@@ -100,7 +100,7 @@ function App() {
       {/* Main website components - always mounted for WebGL scene pre-compilation, opacity managed via isReveal */}
       {sitePhase !== 'preloader' && (
         <>
-          <GlobalCameraMorph scrollProgress={scrollYProgress} isReveal={isReveal} />
+          <GlobalCameraMorph isReveal={isReveal} />
 
           <ParticleField isReveal={isReveal} />
 
@@ -112,7 +112,8 @@ function App() {
           <ContactSection />
         </>
       )}
-    </div>
+      </div>
+    </ReactLenis>
   )
 }
 

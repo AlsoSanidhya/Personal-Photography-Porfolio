@@ -8,6 +8,9 @@ import ParallaxText from '../components/ui/ParallaxText'
 
 // TODO: Replace with actual local Instagram preview image when available
 import instagramPreview from '../assets/images/instagram-preview.jpg'
+import spotifyBg from '../assets/images/myworld/spotify_bg.png'
+import githubBg from '../assets/images/myworld/github_bg.png'
+import linkedinBg from '../assets/images/myworld/linkedin_bg.png'
 
 export const MyWorldSection: React.FC = () => {
   const socials = PORTFOLIO_DATA.socials
@@ -72,10 +75,11 @@ export const MyWorldSection: React.FC = () => {
               target="_blank" 
               rel="noopener noreferrer"
               whileHover={{ y: -6, scale: 1.01, borderColor: 'rgba(139, 92, 246, 0.3)', boxShadow: '0 20px 40px rgba(139, 92, 246, 0.08)' }}
+              whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="bento-card group relative block h-[320px] sm:h-[400px] md:h-[450px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 overflow-hidden transition-all duration-300 w-full"
+              className="bento-card group relative block h-[250px] sm:h-[400px] md:h-[450px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 overflow-hidden transition-all duration-300 w-full"
             >
-              <div className="absolute inset-0 bg-cover bg-center opacity-25 group-hover:opacity-35 transition-opacity duration-500" style={{ backgroundImage: `url('${instagramPreview}')` }} />
+              <img src={instagramPreview} alt="Instagram Feed" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-25 group-hover:opacity-35 transition-opacity duration-500 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
               
               <div className="absolute top-6 left-6 p-3 bg-[#F5F1E8]/5 rounded-xl border border-[#F5F1E8]/10 text-[#8B5CF6] transition-colors duration-300 group-hover:bg-[#8B5CF6]/10">
@@ -100,14 +104,19 @@ export const MyWorldSection: React.FC = () => {
               target="_blank" 
               rel="noopener noreferrer"
               whileHover={{ y: -6, scale: 1.02, borderColor: 'rgba(139, 92, 246, 0.3)', boxShadow: '0 20px 40px rgba(139, 92, 246, 0.08)' }}
+              whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="bento-card group relative block h-[200px] sm:h-[210px] md:h-[210px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 p-6 transition-all duration-300 overflow-hidden w-full"
+              className="bento-card group relative block h-[250px] sm:h-[210px] md:h-[210px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 transition-all duration-300 overflow-hidden w-full"
             >
+              <img src={spotifyBg} alt="Spotify Playlist" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-25 group-hover:opacity-35 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent" />
+
               <div className="absolute top-6 left-6 p-3 bg-[#F5F1E8]/5 rounded-xl border border-[#F5F1E8]/10 text-[#8B5CF6] transition-colors duration-300 group-hover:bg-[#8B5CF6]/10">
                 <Music className="w-5 h-5" />
               </div>
-              <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <ArrowUpRight className="w-5 h-5 text-[#F5F1E8]/30" />
+              <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
+                <span className="text-[9px] sm:text-[10px] font-sans font-medium text-[#F5F1E8]/40 uppercase tracking-[0.15em] hidden sm:block">Open on Spotify</span>
+                <ArrowUpRight className="w-5 h-5 text-[#F5F1E8]/40" />
               </div>
               
               <div className="absolute bottom-6 left-6">
@@ -125,8 +134,9 @@ export const MyWorldSection: React.FC = () => {
               target="_blank" 
               rel="noopener noreferrer"
               whileHover={{ y: -6, scale: 1.02, borderColor: 'rgba(139, 92, 246, 0.3)', boxShadow: '0 20px 40px rgba(139, 92, 246, 0.08)' }}
+              whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="bento-card group relative block h-[200px] sm:h-[210px] md:h-[216px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 p-6 transition-all duration-300 overflow-hidden w-full"
+              className="bento-card group relative block h-[250px] sm:h-[210px] md:h-[216px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 p-6 transition-all duration-300 overflow-hidden w-full"
             >
               <div className="absolute top-6 left-6 p-3 bg-[#F5F1E8]/5 rounded-xl border border-[#F5F1E8]/10 text-[#8B5CF6] transition-colors duration-300 group-hover:bg-[#8B5CF6]/10">
                 <Sparkles className="w-5 h-5 animate-pulse" />
@@ -150,9 +160,13 @@ export const MyWorldSection: React.FC = () => {
               target="_blank" 
               rel="noopener noreferrer"
               whileHover={{ y: -6, scale: 1.02, borderColor: 'rgba(139, 92, 246, 0.3)', boxShadow: '0 20px 40px rgba(139, 92, 246, 0.08)' }}
+              whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="bento-card group relative block h-[200px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 p-6 transition-all duration-300 w-full"
+              className="bento-card group relative block h-[250px] md:h-[200px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 transition-all duration-300 overflow-hidden w-full"
             >
+              <img src={githubBg} alt="GitHub" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-25 group-hover:opacity-35 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent" />
+
               <div className="absolute top-6 left-6 p-3 bg-[#F5F1E8]/5 rounded-xl border border-[#F5F1E8]/10 text-[#8B5CF6] transition-colors duration-300 group-hover:bg-[#8B5CF6]/10">
                 <Github className="w-5 h-5" />
               </div>
@@ -175,10 +189,14 @@ export const MyWorldSection: React.FC = () => {
               target="_blank" 
               rel="noopener noreferrer"
               whileHover={{ y: -6, scale: 1.01, borderColor: 'rgba(139, 92, 246, 0.3)', boxShadow: '0 20px 40px rgba(139, 92, 246, 0.08)' }}
+              whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="bento-card group relative block h-[200px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 p-6 transition-all duration-300 overflow-hidden w-full"
+              className="bento-card group relative block h-[250px] md:h-[200px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 transition-all duration-300 overflow-hidden w-full"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-[#8B5CF6]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <img src={linkedinBg} alt="LinkedIn" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-25 group-hover:opacity-35 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent" />
+              
+              <div className="absolute inset-0 bg-gradient-to-r from-[#8B5CF6]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               <div className="absolute top-6 left-6 p-3 bg-[#F5F1E8]/5 rounded-xl border border-[#F5F1E8]/10 text-[#8B5CF6] transition-colors duration-300 group-hover:bg-[#8B5CF6]/10">
                 <Linkedin className="w-5 h-5" />

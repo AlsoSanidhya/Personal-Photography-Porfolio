@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import { usePerformanceTier } from '../../hooks/usePerformanceTier'
 
 interface Particle {
   x: number
@@ -24,6 +25,7 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
   const [reducedMotion, setReducedMotion] = useState(() => 
     typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false
   )
+  const performanceTier = usePerformanceTier()
   const mouseRef = useRef({ x: -9999, y: -9999 })
 
   useEffect(() => {
@@ -50,7 +52,12 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
       canvas.style.width = `${window.innerWidth}px`
       canvas.style.height = `${window.innerHeight}px`
 
-      const density = window.innerWidth < 768 ? 60 : 160
+      const densityMap = {
+        high: window.innerWidth < 768 ? 60 : 160,
+        mid: window.innerWidth < 768 ? 40 : 80,
+        low: window.innerWidth < 768 ? 20 : 40,
+      }
+      const density = densityMap[performanceTier]
       createParticles(density)
     }
 
@@ -119,17 +126,29 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
     const hoverRadius = 150
     const pushStrength = 24
 
+    const PI2 = Math.PI * 2
+    let isVisible = true
+
+    const handleScroll = () => {
+      // Pause calculations if scrolled more than 1.5x screen height
+      isVisible = window.scrollY < window.innerHeight * 1.5
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
     const render = (time: number) => {
+      animationFrameId = requestAnimationFrame(render)
+      if (!isVisible) return
+
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
 
       const w = window.innerWidth
       const h = window.innerHeight
       const mouse = mouseRef.current
 
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i]
-
-        if (!reducedMotion) {
+      if (!reducedMotion) {
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i]
+          
           // Slow organic wave movement to simulate air draft
           const angleOffset = Math.sin(time * 0.0006 + p.x * 0.004) * 0.06 * p.depth
           p.x += p.vx + angleOffset
@@ -146,16 +165,14 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
           let targetDispX = 0
           let targetDispY = 0
 
-          if (mouse.x !== -9999) {
+          if (performanceTier !== 'low' && mouse.x !== -9999) {
             const dx = (p.x + p.dispX) - mouse.x
             const dy = (p.y + p.dispY) - mouse.y
             const dist = Math.hypot(dx, dy)
 
             if (dist < hoverRadius) {
               const ratio = 1 - dist / hoverRadius
-              // Increase size slightly near the cursor
               targetRadius = p.baseRadius * (1 + ratio * 0.95)
-              // Increase opacity slightly near the cursor
               targetAlpha = Math.min(0.80, p.baseAlpha + (0.85 - p.baseAlpha) * ratio * 0.5)
 
               const force = ratio * pushStrength * (p.depth * 0.4 + 0.6)
@@ -165,38 +182,47 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
             }
           }
 
-          // Lerp values for premium cinematic smoothness & interpolation back to original
           p.currentRadius += (targetRadius - p.currentRadius) * 0.08
           p.currentAlpha += (targetAlpha - p.currentAlpha) * 0.08
           p.dispX += (targetDispX - p.dispX) * 0.06
           p.dispY += (targetDispY - p.dispY) * 0.06
-        } else {
-          // Keep static for reduced motion
+
+          ctx.beginPath()
+          ctx.arc(p.x + p.dispX, p.y + p.dispY, p.currentRadius, 0, PI2)
+
+          if (p.depth === 3) {
+            ctx.fillStyle = `rgba(255,220,170,${p.currentAlpha})`
+          } else if (p.depth === 2) {
+            ctx.fillStyle = `rgba(180,200,255,${p.currentAlpha})`
+          } else {
+            ctx.fillStyle = `rgba(220,220,255,${p.currentAlpha * 0.7})`
+          }
+
+          ctx.fill()
+        }
+      } else {
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i]
           p.currentRadius = p.baseRadius
           p.currentAlpha = p.baseAlpha * 0.5
           p.dispX = 0
           p.dispY = 0
+
+          ctx.beginPath()
+          ctx.arc(p.x + p.dispX, p.y + p.dispY, p.currentRadius, 0, PI2)
+
+          if (p.depth === 3) {
+            ctx.fillStyle = `rgba(255,220,170,${p.currentAlpha})`
+          } else if (p.depth === 2) {
+            ctx.fillStyle = `rgba(180,200,255,${p.currentAlpha})`
+          } else {
+            ctx.fillStyle = `rgba(220,220,255,${p.currentAlpha * 0.7})`
+          }
+
+          ctx.fill()
         }
-
-        // Draw particle node
-        ctx.beginPath()
-        ctx.arc(p.x + p.dispX, p.y + p.dispY, p.currentRadius, 0, Math.PI * 2)
-
-        if (p.depth === 3) {
-          ctx.fillStyle = `rgba(255,220,170,${p.currentAlpha})`
-        } else if (p.depth === 2) {
-          ctx.fillStyle = `rgba(180,200,255,${p.currentAlpha})`
-        } else {
-          ctx.fillStyle = `rgba(220,220,255,${p.currentAlpha * 0.7})`
-        }
-
-        // Disable shadows on every particle for 60fps performance
-        ctx.shadowBlur = 0
-
-        ctx.fill()
       }
 
-      animationFrameId = requestAnimationFrame(render)
     }
 
     animationFrameId = requestAnimationFrame(render)
@@ -205,9 +231,10 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', setupCanvas)
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('scroll', handleScroll)
       document.removeEventListener('mouseleave', handleMouseLeave)
     }
-  }, [reducedMotion])
+  }, [reducedMotion, performanceTier])
 
   return (
     <motion.canvas

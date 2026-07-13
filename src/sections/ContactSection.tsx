@@ -48,7 +48,7 @@ export const ContactSection: React.FC = () => {
               href="https://mail.google.com/mail/?view=cm&fs=1&to=sheeshsanidhya@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-3 bg-[#F5F1E8]/5 border border-[#F5F1E8]/10 px-8 py-4 rounded-3xl hover:bg-[#F5F1E8]/10 hover:border-[#8B5CF6]/30 transition-all duration-300 group cursor-pointer text-[#F5F1E8]"
+              className="inline-flex items-center justify-center gap-3 bg-[#F5F1E8]/5 border border-[#F5F1E8]/10 px-8 py-4 rounded-3xl hover:bg-[#F5F1E8]/10 hover:border-[#8B5CF6]/30 active:scale-95 transition-all duration-300 group cursor-pointer text-[#F5F1E8] w-full sm:w-auto"
             >
               <Mail className="w-5 h-5 text-[#8B5CF6] group-hover:scale-110 transition-transform duration-300" />
               <span className="font-sans font-medium tracking-wide uppercase text-sm sm:text-base">
@@ -58,7 +58,7 @@ export const ContactSection: React.FC = () => {
 
             <button
               onClick={copyEmail}
-              className="inline-flex items-center justify-center gap-3 bg-[#F5F1E8]/5 border border-[#F5F1E8]/10 px-8 py-4 rounded-3xl hover:bg-[#F5F1E8]/10 hover:border-[#8B5CF6]/30 transition-all duration-300 group cursor-pointer text-[#F5F1E8]"
+              className="inline-flex items-center justify-center gap-3 bg-[#F5F1E8]/5 border border-[#F5F1E8]/10 px-8 py-4 rounded-3xl hover:bg-[#F5F1E8]/10 hover:border-[#8B5CF6]/30 active:scale-95 transition-all duration-300 group cursor-pointer text-[#F5F1E8] w-full sm:w-auto"
             >
               {copied ? (
                 <Check className="w-5 h-5 text-emerald-400 scale-110 transition-transform duration-300" />
@@ -84,19 +84,19 @@ export const ContactSection: React.FC = () => {
         </div>
 
         {/* Footer Bottom info */}
-        <div className="flex flex-col sm:flex-row justify-between items-center border-t border-[#F5F1E8]/5 pt-8 gap-6 text-sm text-[#B8B1A6]">
+        <div className="flex flex-col md:flex-row justify-between items-center border-t border-[#F5F1E8]/5 pt-8 gap-8 md:gap-6 text-sm text-[#B8B1A6]">
           <FadeIn y={10} delay={0.3} duration={1.2}>
-            <p>© {new Date().getFullYear()} {name}. ALL RIGHTS RESERVED.</p>
+            <p className="text-center md:text-left">© {new Date().getFullYear()} {name}. ALL RIGHTS RESERVED.</p>
           </FadeIn>
 
-          <FadeIn y={10} delay={0.4} duration={1.2} className="flex gap-6 sm:gap-8">
-            <a href={insta.url} target="_blank" rel="noopener noreferrer" className="text-[#B8B1A6] hover:text-[#F5F1E8] transition-colors duration-200 uppercase tracking-widest text-[10px] sm:text-xs font-semibold flex items-center gap-2">
+          <FadeIn y={10} delay={0.4} duration={1.2} className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-center w-full sm:w-auto">
+            <a href={insta.url} target="_blank" rel="noopener noreferrer" className="text-[#B8B1A6] hover:text-[#F5F1E8] transition-colors duration-200 uppercase tracking-widest text-[10px] sm:text-xs font-semibold flex items-center justify-center gap-2 w-full sm:w-auto py-2 sm:py-0">
               <Instagram className="w-4 h-4" /> Instagram
             </a>
-            <a href={linkedin.url} target="_blank" rel="noopener noreferrer" className="text-[#B8B1A6] hover:text-[#F5F1E8] transition-colors duration-200 uppercase tracking-widest text-[10px] sm:text-xs font-semibold flex items-center gap-2">
+            <a href={linkedin.url} target="_blank" rel="noopener noreferrer" className="text-[#B8B1A6] hover:text-[#F5F1E8] transition-colors duration-200 uppercase tracking-widest text-[10px] sm:text-xs font-semibold flex items-center justify-center gap-2 w-full sm:w-auto py-2 sm:py-0">
               <Linkedin className="w-4 h-4" /> LinkedIn
             </a>
-            <a href={github.url} target="_blank" rel="noopener noreferrer" className="text-[#B8B1A6] hover:text-[#F5F1E8] transition-colors duration-200 uppercase tracking-widest text-[10px] sm:text-xs font-semibold flex items-center gap-2">
+            <a href={github.url} target="_blank" rel="noopener noreferrer" className="text-[#B8B1A6] hover:text-[#F5F1E8] transition-colors duration-200 uppercase tracking-widest text-[10px] sm:text-xs font-semibold flex items-center justify-center gap-2 w-full sm:w-auto py-2 sm:py-0">
               <Github className="w-4 h-4" /> GitHub
             </a>
           </FadeIn>

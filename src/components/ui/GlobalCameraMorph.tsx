@@ -1,16 +1,18 @@
 import React, { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { MotionValue, motion } from 'framer-motion'
+import { usePerformanceTier } from '../../hooks/usePerformanceTier'
+import { motion, useScroll } from 'framer-motion'
 
 interface GlobalCameraMorphProps {
-  scrollProgress: MotionValue<number>
   isReveal?: boolean
 }
 
-export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ scrollProgress, isReveal = true }) => {
+export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ isReveal = true }) => {
+  const { scrollYProgress: scrollProgress } = useScroll()
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const mouseRef = useRef({ x: 0, y: 0 })
+  const performanceTier = usePerformanceTier()
 
   useEffect(() => {
     // Track mouse coordinates for tilt parallax (throttled to 30fps)
@@ -46,10 +48,15 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ scrollProg
     const renderer = new THREE.WebGLRenderer({
       canvas,
       alpha: true,
-      antialias: true
+      antialias: performanceTier !== 'low'
     })
     renderer.setSize(container.clientWidth, container.clientHeight)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+    const pixelRatioMap = {
+      high: Math.min(window.devicePixelRatio, 1.5),
+      mid: Math.min(window.devicePixelRatio, 1.0),
+      low: 1.0
+    }
+    renderer.setPixelRatio(pixelRatioMap[performanceTier])
 
     // Lights
     const ambientLight = new THREE.AmbientLight(0x0a0a0c)
@@ -85,7 +92,15 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ scrollProg
     const bladeGeometry = new THREE.BoxGeometry(0.35, 0.12, 0.005)
 
     // --- MATERIALS (Single-purpose, shared to minimize draw calls) ---
-    const glassMaterial = new THREE.MeshPhysicalMaterial({
+    const isLowEnd = performanceTier === 'low'
+
+    const glassMaterial = isLowEnd ? new THREE.MeshStandardMaterial({
+      color: 0x141416,
+      roughness: 0.12,
+      transparent: true,
+      opacity: 0.9,
+      side: THREE.DoubleSide
+    }) : new THREE.MeshPhysicalMaterial({
       color: 0x141416,
       transmission: 0.96,
       roughness: 0.12,
@@ -122,8 +137,14 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ scrollProg
       side: THREE.DoubleSide
     })
 
-    const lensGlassMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x4c1d95, // Violet/indigo optical coating reflection
+    const lensGlassMaterial = isLowEnd ? new THREE.MeshStandardMaterial({
+      color: 0x4c1d95,
+      roughness: 0.01,
+      transparent: true,
+      opacity: 0.0,
+      side: THREE.DoubleSide
+    }) : new THREE.MeshPhysicalMaterial({
+      color: 0x4c1d95,
       transmission: 0.98,
       roughness: 0.01,
       thickness: 0.12,
@@ -351,7 +372,7 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ scrollProg
       instancedBlades.dispose()
       renderer.dispose()
     }
-  }, [scrollProgress])
+  }, [scrollProgress, performanceTier])
 
   return (
     <motion.div
