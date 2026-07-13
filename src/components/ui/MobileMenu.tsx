@@ -28,7 +28,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ onNavigate }) => {
     setTimeout(() => onNavigate(id), 300) // wait for exit animation
   }
 
-  const menuVariants = {
+  const menuVariants: any = {
     closed: {
       opacity: 0,
       y: '-100%',
@@ -39,9 +39,9 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ onNavigate }) => {
       y: 0,
       transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
     }
-  }
+  } as any
 
-  const linkVariants = {
+  const linkVariants: any = {
     closed: { opacity: 0, y: 20 },
     open: (i: number) => ({
       opacity: 1,
