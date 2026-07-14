@@ -11,6 +11,7 @@ import GallerySection from './sections/GallerySection'
 import MyWorldSection from './sections/MyWorldSection'
 import ContactSection from './sections/ContactSection'
 import GlobalCameraMorph from './components/ui/GlobalCameraMorph'
+import AudioPlayer from './components/ui/AudioPlayer'
 
 function App() {
   const [sitePhase, setSitePhase] = useState<'preloader' | 'welcome' | 'reveal'>('preloader')
@@ -71,7 +72,8 @@ function App() {
               animate={{ opacity: 0.15 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.0 }}
-              className="absolute w-[350px] h-[350px] bg-white/10 rounded-full blur-[100px] pointer-events-none" 
+              className="absolute w-[350px] h-[350px] rounded-full pointer-events-none"
+              style={{ background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%)' }}
             />
 
             <AnimatePresence>
@@ -110,6 +112,8 @@ function App() {
           <GallerySection />
           <MyWorldSection />
           <ContactSection />
+          
+          <AudioPlayer />
         </>
       )}
       </div>

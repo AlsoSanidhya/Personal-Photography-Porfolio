@@ -37,11 +37,11 @@ export const GallerySection: React.FC = () => {
           <AnimatePresence mode="popLayout">
             {gallery.map((item: GalleryItem, index: number) => (
               <motion.div
-                layout
                 initial={{ opacity: 0, scale: 0.94, y: 35 }}
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 whileTap={{ scale: 0.98 }}
+                style={{ willChange: "opacity, transform" }}
                 exit={{ opacity: 0, scale: 0.94 }}
                 transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
                 key={item.id}

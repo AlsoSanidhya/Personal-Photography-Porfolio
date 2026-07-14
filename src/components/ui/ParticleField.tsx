@@ -120,8 +120,8 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
       mouseRef.current.y = -9999
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseleave', handleMouseLeave)
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    document.addEventListener('mouseleave', handleMouseLeave, { passive: true })
 
     const hoverRadius = 150
     const pushStrength = 24

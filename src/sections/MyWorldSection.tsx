@@ -54,8 +54,8 @@ export const MyWorldSection: React.FC = () => {
             Digital Identity
           </span>
           <ParallaxText baseY={50} className="w-full flex justify-center sm:justify-start items-center">
-            <h2 className="hero-heading font-serif font-medium uppercase tracking-[0.05em] leading-none text-[3.5rem] sm:text-[6vw] md:text-[80px]">
-              My World
+            <h2 className="hero-heading font-serif font-medium uppercase tracking-[0.05em] leading-[0.95] text-[3.5rem] sm:text-[6vw] md:text-[80px]">
+              Beyond<br />The Lens
             </h2>
           </ParallaxText>
         </FadeIn>
