@@ -70,7 +70,7 @@ export const GalleryLightbox: React.FC<GalleryLightboxProps> = ({ images, initia
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[10000] bg-[#050505]/95 backdrop-blur-xl flex items-center justify-center touch-none"
+        className="fixed inset-0 z-[10000] bg-[#050505]/95 backdrop-blur-xl flex items-center justify-center touch-pan-y"
         style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         <button

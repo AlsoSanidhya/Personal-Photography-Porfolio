@@ -48,7 +48,7 @@ function App() {
   const isReveal = sitePhase === 'reveal'
 
   return (
-    <ReactLenis root options={{ lerp: 0.08, smoothWheel: true }}>
+    <ReactLenis root options={{ lerp: 0.08, smoothWheel: true, syncTouch: false, smoothTouch: false }}>
       <div className="bg-[#050505] min-h-screen text-[#F5F1E8] select-none relative z-20">
       {/* Global Preloader Phase */}
       <AnimatePresence mode="wait">
