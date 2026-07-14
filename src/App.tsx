@@ -12,6 +12,7 @@ import MyWorldSection from './sections/MyWorldSection'
 import ContactSection from './sections/ContactSection'
 import GlobalCameraMorph from './components/ui/GlobalCameraMorph'
 import AudioPlayer from './components/ui/AudioPlayer'
+import { Analytics } from '@vercel/analytics/react'
 
 function App() {
   const [sitePhase, setSitePhase] = useState<'preloader' | 'welcome' | 'reveal'>('preloader')
@@ -117,6 +118,7 @@ function App() {
         </>
       )}
       </div>
+      <Analytics />
     </ReactLenis>
   )
 }
