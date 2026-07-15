@@ -5,7 +5,7 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import aboutMoon from '../../assets/images/about/about-moon.jpg'
 import aboutLego from '../../assets/images/about/about-lego.jpg'
 import aboutObject3d from '../../assets/images/about/about-object3d.jpg'
-import aboutGroup3d from '../../assets/originals/gallery/DSC_0700.jpg'
+import aboutGroup3d from '../../assets/originals/gallery/DSC_0700.webp'
 
 interface ThreeDObjectProps {
   type: 'moon' | 'lego' | 'object3d' | 'group3d'

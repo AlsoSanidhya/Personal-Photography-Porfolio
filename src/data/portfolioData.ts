@@ -1,8 +1,8 @@
 // Dynamically import original photography images
-const heroImagesGlob = import.meta.glob('../assets/originals/hero/*.{jpg,jpeg,png,webp,JPG,JPEG}', { eager: true }) as Record<string, { default: string }>
+const heroImagesGlob = import.meta.glob('../assets/originals/hero/*.webp', { eager: true }) as Record<string, { default: string }>
 export const HERO_SLIDESHOW_IMAGES = Object.values(heroImagesGlob).map(mod => mod.default)
 
-const galleryImagesGlob = import.meta.glob('../assets/originals/gallery/*.{jpg,jpeg,png,webp,JPG,JPEG}', { eager: true }) as Record<string, { default: string }>
+const galleryImagesGlob = import.meta.glob('../assets/originals/gallery/*.webp', { eager: true }) as Record<string, { default: string }>
 const GALLERY_IMAGE_URLS = Object.values(galleryImagesGlob).map(mod => mod.default)
 
 export interface GalleryItem {
