@@ -24,13 +24,11 @@ export const PORTFOLIO_DATA = {
     name: 'Sanidhya Negi', 
     title: 'Hi, i\'m Sanidhya', 
     role: 'Creative Explorer',
-    bio: `Hi! 👋 Welcome to my little corner of the internet.
+    bio: `Every frame has a story. Welcome to mine.
 
-I'm Sanidhya, a CSE student who enjoys exploring different creative fields. Photography is one of my favorite hobbies, but it isn't the only thing that defines me. I'm passionate about technology, editing, design, content creation, and constantly learning new skills.
+I'm Sanidhya, an undergrad who enjoys exploring different creative fields. Photography is one of my favorite hobbies, but it isn't the only thing that defines me. I'm passionate about technology, editing, design, content creation, and constantly learning new skills.
 
-I enjoy experimenting with new ideas, building projects, and exploring different creative outlets. Rather than trying to be an expert in just one thing, I love learning, creating, and growing through every experience. This portfolio is a collection of the moments I capture, the projects I build, and the creativity I continue to explore.
-
-Thanks for stopping by—I hope you enjoy exploring my work as much as I enjoyed creating it.`,
+I enjoy experimenting with new ideas, building projects, and exploring different creative outlets. Rather than trying to be an expert in just one thing, I believe in continuous learning, creating, and growing through every experience. This portfolio is a collection of the moments I capture, the projects I build, and the creativity I bring to everything I do.`,
     
     email: 'sheeshsanidhya@gmail.com'
   },
