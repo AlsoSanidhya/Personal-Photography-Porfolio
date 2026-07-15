@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Music, Sparkles, ArrowUpRight } from 'lucide-react'
+import { Music, Sparkles, ArrowUpRight, MessageCircle } from 'lucide-react'
 import { Instagram, Github, Linkedin } from '../components/ui/Icons'
 import { PORTFOLIO_DATA } from '../data/portfolioData'
 import FadeIn from '../components/ui/FadeIn'
@@ -11,6 +11,7 @@ import instagramPreview from '../assets/images/instagram-preview.jpg'
 import spotifyBg from '../assets/images/myworld/spotify_bg.png'
 import githubBg from '../assets/images/myworld/github_bg.png'
 import linkedinBg from '../assets/images/myworld/linkedin_bg.png'
+import feedbackBg from '../assets/images/myworld/feedback_bg.png'
 
 export const MyWorldSection: React.FC = () => {
   const socials = PORTFOLIO_DATA.socials
@@ -209,6 +210,40 @@ export const MyWorldSection: React.FC = () => {
                 <span className="text-[10px] font-sans font-medium tracking-[0.2em] text-[#8B5CF6] uppercase">Professional</span>
                 <h3 className="font-serif text-xl sm:text-2xl font-normal text-[#F5F1E8] mt-1 mb-1">LinkedIn Network</h3>
                 <p className="text-xs text-[#B8B1A6]">{linkedin.handle} — Connecting with visual creators, agencies, and tech innovators.</p>
+              </div>
+            </motion.a>
+          </motion.div>
+
+          {/* Card 6: Website Feedback */}
+          <motion.div variants={cardVariants} className="md:col-span-3">
+            <motion.a 
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfiNUJIm6ddAJ7LRU1i_wGtvhPzUp8gUbbA80qd-rkZh4WD2g/viewform?usp=header" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              title="Share your feedback"
+              aria-label="Open Feedback Form"
+              whileHover={{ y: -6, scale: 1.01, borderColor: 'rgba(139, 92, 246, 0.3)', boxShadow: '0 20px 40px rgba(139, 92, 246, 0.08)' }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="bento-card group relative block h-[250px] md:h-[200px] rounded-2xl bg-[#0A0A0A] border border-[#F5F1E8]/5 transition-all duration-300 overflow-hidden w-full"
+            >
+              <img src={feedbackBg} alt="Website Feedback Background" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-25 group-hover:opacity-35 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent" />
+              
+              <div className="absolute inset-0 bg-gradient-to-r from-[#8B5CF6]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="absolute top-6 left-6 p-3 bg-[#F5F1E8]/5 rounded-xl border border-[#F5F1E8]/10 text-[#8B5CF6] transition-colors duration-300 group-hover:bg-[#8B5CF6]/10">
+                <MessageCircle className="w-5 h-5" />
+              </div>
+              <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
+                <span className="text-[9px] sm:text-[10px] font-sans font-medium text-[#F5F1E8]/40 uppercase tracking-[0.15em] hidden sm:block">Open Form</span>
+                <ArrowUpRight className="w-5 h-5 text-[#F5F1E8]/30" />
+              </div>
+
+              <div className="absolute bottom-6 left-6">
+                <span className="text-[10px] font-sans font-medium tracking-[0.2em] text-[#8B5CF6] uppercase">FEEDBACK</span>
+                <h3 className="font-serif text-xl sm:text-2xl font-normal text-[#F5F1E8] mt-1 mb-1">Website Feedback</h3>
+                <p className="text-xs text-[#B8B1A6] max-w-2xl">Help shape the future of this portfolio. Share your thoughts, report bugs, suggest new features, or simply let me know what you enjoyed.</p>
               </div>
             </motion.a>
           </motion.div>
