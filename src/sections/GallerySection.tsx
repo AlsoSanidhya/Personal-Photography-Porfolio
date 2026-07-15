@@ -39,7 +39,7 @@ export const GallerySection: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.94, y: 35 }}
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
+                viewport={{ once: true, margin: '50px' }}
                 whileTap={{ scale: 0.98 }}
                 style={{ willChange: "opacity, transform" }}
                 exit={{ opacity: 0, scale: 0.94 }}

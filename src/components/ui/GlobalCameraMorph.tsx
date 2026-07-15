@@ -13,6 +13,15 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ isReveal =
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const mouseRef = useRef({ x: 0, y: 0 })
   const performanceTier = usePerformanceTier()
+  const [reducedMotion, setReducedMotion] = React.useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReducedMotion(mediaQuery.matches)
+    const listener = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
+    mediaQuery.addEventListener('change', listener)
+    return () => mediaQuery.removeEventListener('change', listener)
+  }, [])
 
   useEffect(() => {
     // Track mouse coordinates for tilt parallax (throttled to 30fps)
@@ -114,7 +123,7 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ isReveal =
     const emissiveMaterial = new THREE.MeshBasicMaterial({
       color: 0xa78bfa, // soft violet glow
       transparent: true,
-      opacity: 0.8,
+      opacity: (window.innerWidth < 768) ? 0.3 : 0.8, // reduced on mobile to save GPU fill rate
       blending: THREE.AdditiveBlending,
       side: THREE.DoubleSide
     })
@@ -232,8 +241,30 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ isReveal =
     let currentTiltY = 0
     let idleRotation = 0
 
+    let isScrolling = false
+    let scrollTimeout: ReturnType<typeof setTimeout>
+    const handleScroll = () => {
+      isScrolling = true
+      clearTimeout(scrollTimeout)
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false
+      }, 100)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    let lastProgress = -1
+
     const render = (time: number) => {
+      animationFrameId = requestAnimationFrame(render)
+
       const progress = scrollProgress.get()
+      const isProgressChanged = Math.abs(progress - lastProgress) > 0.0001
+      
+      // If we are far down the page (progress > 0.9) and not scrolling, we can optionally throttle.
+      // But we must render if progress changed.
+      
+      // Calculate morph state
+      lastProgress = progress
 
       // --- SCROLL MORPH MATH ---
       const ringsOpacity = 1.0
@@ -297,25 +328,36 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ isReveal =
       frontBezel.position.z = 0.12 + barrelZOffset
 
       // Apply computed blade transformations to InstancedMesh
-      updateBlades(bladesAngle)
+      if (isProgressChanged) {
+        updateBlades(bladesAngle)
+      }
 
       // --- CONTINUOUS IDLE ANIMATIONS ---
-      idleRotation += 0.002
+      if (!reducedMotion) {
+        idleRotation += (window.innerWidth < 768 ? 0.0008 : 0.0014) // Reduced speed
+      }
       const idleTime = time * 0.001
 
       // 1. Subtle breathing emissive glow
-      emissiveMaterial.opacity = 0.35 + Math.sin(idleTime * 2.0) * 0.20
+      if (!reducedMotion) {
+        emissiveMaterial.opacity = (window.innerWidth < 768 ? 0.2 : 0.35) + Math.sin(idleTime * 2.0) * (window.innerWidth < 768 ? 0.05 : 0.20)
+      }
 
       // 2. Slow rotation of outer lens and blades groups
       ringsGroup.rotation.z = idleRotation
       ringsGroup.scale.set(ringsScaleVal, ringsScaleVal, ringsScaleVal)
-      glowRingMesh.rotation.z = -idleRotation * 0.5
-      bladesGroup.rotation.z = -idleRotation * 0.35
-      cylinderGroup.rotation.z = idleRotation * 0.18
+      
+      if (!reducedMotion) {
+        glowRingMesh.rotation.z = -idleRotation * 0.5
+        bladesGroup.rotation.z = -idleRotation * 0.35
+        cylinderGroup.rotation.z = idleRotation * 0.18
 
-      // 3. Subtle floating motion (Y-axis translation)
-      masterGroup.position.y = Math.sin(idleTime * 1.4) * 0.08
-      masterGroup.position.x = Math.cos(idleTime * 0.9) * 0.04
+        // 3. Subtle floating motion (Y-axis translation)
+        if (!isScrolling) {
+          masterGroup.position.y = Math.sin(idleTime * 1.4) * 0.08
+          masterGroup.position.x = Math.cos(idleTime * 0.9) * 0.04
+        }
+      }
 
       // --- SCROLL TRANSFORM APPLIED ---
       masterGroup.scale.set(scrollScale, scrollScale, scrollScale)
@@ -331,9 +373,10 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ isReveal =
       masterGroup.rotation.y = currentTiltY
       masterGroup.rotation.z = scrollRotZ
 
-      // Render
-      renderer.render(scene, camera)
-      animationFrameId = requestAnimationFrame(render)
+      // Render only if something changed or we are idling visibly
+      if (isProgressChanged || !isScrolling || !reducedMotion) {
+        renderer.render(scene, camera)
+      }
     }
 
     let animationFrameId = requestAnimationFrame(render)
@@ -352,6 +395,7 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ isReveal =
     return () => {
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', handleResize)
+      window.removeEventListener('scroll', handleScroll)
 
       // Dispose resources
       ringGeom1.dispose()

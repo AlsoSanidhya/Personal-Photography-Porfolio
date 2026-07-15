@@ -53,9 +53,9 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
       canvas.style.height = `${window.innerHeight}px`
 
       const densityMap = {
-        high: window.innerWidth < 768 ? 60 : 160,
-        mid: window.innerWidth < 768 ? 40 : 80,
-        low: window.innerWidth < 768 ? 20 : 40,
+        high: window.innerWidth < 768 ? 40 : 160,
+        mid: window.innerWidth < 768 ? 25 : 80,
+        low: window.innerWidth < 768 ? 10 : 40,
       }
       const density = densityMap[performanceTier]
       createParticles(density)
@@ -128,16 +128,25 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
 
     const PI2 = Math.PI * 2
     let isVisible = true
+    let isScrolling = false
+    let scrollTimeout: ReturnType<typeof setTimeout>
 
     const handleScroll = () => {
       // Pause calculations if scrolled more than 1.5x screen height
       isVisible = window.scrollY < window.innerHeight * 1.5
+      
+      // Pause rendering while actively scrolling to prevent stutter
+      isScrolling = true
+      clearTimeout(scrollTimeout)
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false
+      }, 150)
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
 
     const render = (time: number) => {
       animationFrameId = requestAnimationFrame(render)
-      if (!isVisible) return
+      if (!isVisible || isScrolling) return
 
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
 
@@ -231,8 +240,9 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', setupCanvas)
       window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('scroll', handleScroll)
       document.removeEventListener('mouseleave', handleMouseLeave)
+      window.removeEventListener('scroll', handleScroll)
+      clearTimeout(scrollTimeout)
     }
   }, [reducedMotion, performanceTier])
 

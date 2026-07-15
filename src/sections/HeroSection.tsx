@@ -11,6 +11,14 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) => {
   const [typingComplete, setTypingComplete] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+  
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
   
   const linesOfWords = [
     [
@@ -39,7 +47,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
     if (!isReveal || HERO_SLIDESHOW_IMAGES.length === 0) return
 
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDESHOW_IMAGES.length)
+      // Pause slideshow if scrolled past the hero section to save battery/CPU
+      if (window.scrollY < window.innerHeight) {
+        setCurrentSlide((prev) => (prev + 1) % HERO_SLIDESHOW_IMAGES.length)
+      }
     }, 6000)
 
     return () => clearInterval(interval)
@@ -52,9 +63,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
     }
   }
 
-  // Scroll parallax for the large title
+  // Scroll parallax for the large title (disabled on mobile for performance)
   const { scrollY } = useScroll()
-  const titleY = useTransform(scrollY, [0, 800], [0, 140])
+  const titleY = useTransform(scrollY, [0, 800], [0, isMobile ? 0 : 140])
 
   // Explicit transitions for each element to coordinate premium entry
   const navVariants = {
@@ -80,7 +91,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
     hidden: { 
       opacity: 0, 
       y: 20,
-      filter: 'blur(5px)'
+      filter: isMobile ? 'blur(0px)' : 'blur(5px)' // blur is too expensive on mobile GPUs
     },
     visible: {
       opacity: 1,
