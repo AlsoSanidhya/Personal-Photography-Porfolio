@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { ReactLenis } from 'lenis/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import Preloader from './components/ui/Preloader'
 import { useEffect, useState } from 'react'
 import { PORTFOLIO_DATA } from './data/portfolioData'
@@ -116,6 +117,8 @@ function App() {
           <AudioPlayer />
         </>
       )}
+      
+      <SpeedInsights />
       </div>
     </ReactLenis>
   )
