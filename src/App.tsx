@@ -1,17 +1,18 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { ReactLenis } from 'lenis/react'
 import Preloader from './components/ui/Preloader'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import { PORTFOLIO_DATA } from './data/portfolioData'
-import ParticleField from './components/ui/ParticleField'
 import HeroSection from './sections/HeroSection'
-import MarqueeSection from './sections/MarqueeSection'
-import AboutSection from './sections/AboutSection'
-import GallerySection from './sections/GallerySection'
-import MyWorldSection from './sections/MyWorldSection'
-import ContactSection from './sections/ContactSection'
-import GlobalCameraMorph from './components/ui/GlobalCameraMorph'
-import AudioPlayer from './components/ui/AudioPlayer'
+
+const ParticleField = lazy(() => import('./components/ui/ParticleField'))
+const MarqueeSection = lazy(() => import('./sections/MarqueeSection'))
+const AboutSection = lazy(() => import('./sections/AboutSection'))
+const GallerySection = lazy(() => import('./sections/GallerySection'))
+const MyWorldSection = lazy(() => import('./sections/MyWorldSection'))
+const ContactSection = lazy(() => import('./sections/ContactSection'))
+const GlobalCameraMorph = lazy(() => import('./components/ui/GlobalCameraMorph'))
+const AudioPlayer = lazy(() => import('./components/ui/AudioPlayer'))
 
 function App() {
   const [sitePhase, setSitePhase] = useState<'preloader' | 'welcome' | 'reveal'>('preloader')
@@ -102,18 +103,17 @@ function App() {
       {/* Main website components - always mounted for WebGL scene pre-compilation, opacity managed via isReveal */}
       {sitePhase !== 'preloader' && (
         <>
-          <GlobalCameraMorph isReveal={isReveal} />
-
-          <ParticleField isReveal={isReveal} />
-
           <HeroSection isReveal={isReveal} />
-          <MarqueeSection />
-          <AboutSection />
-          <GallerySection />
-          <MyWorldSection />
-          <ContactSection />
-          
-          <AudioPlayer />
+          <Suspense fallback={null}>
+            <GlobalCameraMorph isReveal={isReveal} />
+            <ParticleField isReveal={isReveal} />
+            <MarqueeSection />
+            <AboutSection />
+            <GallerySection />
+            <MyWorldSection />
+            <ContactSection />
+            <AudioPlayer />
+          </Suspense>
         </>
       )}
       </div>
