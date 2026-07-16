@@ -67,19 +67,11 @@ function App() {
             transition={{ duration: 1.0, ease: 'easeInOut' }}
             className="fixed inset-0 bg-[#000000] z-[9990] flex items-center justify-center overflow-hidden"
           >
-            {/* Subtle premium backlight glow behind text */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.15 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.0 }}
-              className="absolute w-[350px] h-[350px] rounded-full pointer-events-none"
-              style={{ background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%)' }}
-            />
+            {/* Removed harsh backlight glow to keep text crisp */}
 
             <AnimatePresence>
               {showHello && (
-                <motion.span
+                <motion.div
                   initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 1.0 }}
@@ -87,13 +79,27 @@ function App() {
                     opacity: { duration: 0.6, ease: 'easeOut' },
                     scale: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } 
                   }}
-                  className="font-serif select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8]/90 to-[#B8B1A6]/50 bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(255,255,255,0.12)] tracking-[0.16em]"
-                  style={{
-                    fontSize: 'clamp(76px, 8vw, 110px)'
-                  }}
+                  className="flex items-center justify-center"
                 >
-                  Hello
-                </motion.span>
+                  <motion.span
+                    animate={{ 
+                      y: [0, -7, 0], 
+                      x: [0, 2.5, 0],
+                      opacity: [0.98, 1, 0.98]
+                    }}
+                    transition={{
+                      y: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
+                      x: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
+                      opacity: { duration: 6, repeat: Infinity, ease: 'easeInOut' } // synced with floating
+                    }}
+                    className="font-serif font-light italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(255,255,255,0.06)] tracking-[0.12em] antialiased subpixel-antialiased"
+                    style={{
+                      fontSize: 'clamp(68px, 7vw, 96px)'
+                    }}
+                  >
+                    Welcome.
+                  </motion.span>
+                </motion.div>
               )}
             </AnimatePresence>
           </motion.div>
