@@ -67,7 +67,19 @@ function App() {
             transition={{ duration: 1.0, ease: 'easeInOut' }}
             className="fixed inset-0 bg-[#000000] z-[9990] flex items-center justify-center overflow-hidden"
           >
-            {/* Removed harsh backlight glow to keep text crisp */}
+            {/* Subtle cinematic bloom behind the text */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.08, 0.12, 0.08] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute w-[600px] h-[600px] rounded-full pointer-events-none filter blur-[100px]"
+              style={{ 
+                background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%)',
+                transform: 'translate3d(0,0,0)',
+                willChange: 'opacity'
+              }}
+            />
 
             <AnimatePresence>
               {showHello && (
@@ -79,22 +91,26 @@ function App() {
                     opacity: { duration: 0.6, ease: 'easeOut' },
                     scale: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } 
                   }}
-                  className="flex items-center justify-center"
+                  className="flex items-center justify-center pointer-events-none"
                 >
                   <motion.span
                     animate={{ 
-                      y: [0, -7, 0], 
-                      x: [0, 2.5, 0],
                       opacity: [0.98, 1, 0.98]
                     }}
                     transition={{
-                      y: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
-                      x: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
-                      opacity: { duration: 6, repeat: Infinity, ease: 'easeInOut' } // synced with floating
+                      duration: 6,
+                      repeat: Infinity,
+                      ease: 'easeInOut'
                     }}
-                    className="font-serif font-light italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(255,255,255,0.06)] tracking-[0.12em] antialiased subpixel-antialiased"
+                    className="font-serif font-light italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent tracking-[0.12em] antialiased subpixel-antialiased"
                     style={{
-                      fontSize: 'clamp(68px, 7vw, 96px)'
+                      fontSize: 'clamp(75px, 8vw, 115px)',
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
+                      textRendering: 'optimizeLegibility',
+                      transform: 'translate3d(0,0,0)',
+                      willChange: 'opacity, filter',
+                      filter: 'drop-shadow(0 0 15px rgba(255,255,255,0.06))'
                     }}
                   >
                     Welcome.
