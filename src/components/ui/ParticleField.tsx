@@ -252,8 +252,8 @@ export const ParticleField: React.FC<ParticleFieldProps> = React.memo(({ isRevea
       initial={{ opacity: 0 }}
       animate={isReveal ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 1.5, ease: 'easeOut' }}
-      className="fixed inset-0 pointer-events-none z-1"
-      style={{ mixBlendMode: 'screen' }}
+      className="fixed inset-0 pointer-events-none"
+      style={{ mixBlendMode: 'screen', pointerEvents: 'none', zIndex: 1 }}
     />
   )
 })

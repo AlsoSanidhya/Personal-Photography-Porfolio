@@ -85,37 +85,23 @@ function App() {
             <AnimatePresence>
               {showHello && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.0 }}
-                  transition={{ 
-                    opacity: { duration: 0.6, ease: 'easeOut' },
-                    scale: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } 
-                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.6, ease: 'easeOut' }}
                   className="flex items-center justify-center pointer-events-none"
                 >
-                  <motion.span
-                    animate={{ 
-                      opacity: [0.98, 1, 0.98]
-                    }}
-                    transition={{
-                      duration: 6,
-                      repeat: Infinity,
-                      ease: 'easeInOut'
-                    }}
-                    className="font-serif font-light italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent tracking-[0.12em] antialiased subpixel-antialiased"
+                  <span
+                    className="font-serif font-light italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent tracking-[0.12em] animate-cinematic-breathe pointer-events-auto"
                     style={{
                       fontSize: 'clamp(75px, 8vw, 115px)',
                       WebkitFontSmoothing: 'antialiased',
                       MozOsxFontSmoothing: 'grayscale',
                       textRendering: 'optimizeLegibility',
-                      transform: 'translate3d(0,0,0)',
-                      willChange: 'opacity, filter',
-                      filter: 'drop-shadow(0 0 15px rgba(255,255,255,0.06))'
                     }}
                   >
                     Welcome.
-                  </motion.span>
+                  </span>
                 </motion.div>
               )}
             </AnimatePresence>

@@ -444,7 +444,7 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = React.memo(({
         justifyContent: 'center'
       }}
     >
-      <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+      <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', pointerEvents: 'none' }} />
     </motion.div>
   )
 })

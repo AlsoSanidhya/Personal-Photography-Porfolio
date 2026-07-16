@@ -43,7 +43,7 @@ const LazyMount: React.FC<LazyMountProps> = ({
   }, [isMounted, rootMargin, threshold])
 
   if (!isMounted) {
-    return <div ref={ref} style={{ height: '1px' }} aria-hidden="true" />
+    return <div ref={ref} style={{ height: '1px', pointerEvents: 'none', visibility: 'hidden' }} aria-hidden="true" />
   }
 
   return <>{children}</>
