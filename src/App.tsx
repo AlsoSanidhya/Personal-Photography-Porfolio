@@ -4,6 +4,7 @@ import Preloader from './components/ui/Preloader'
 import { useEffect, useState, lazy, Suspense } from 'react'
 import { PORTFOLIO_DATA } from './data/portfolioData'
 import HeroSection from './sections/HeroSection'
+import { Analytics } from '@vercel/analytics/react'
 
 const ParticleField = lazy(() => import('./components/ui/ParticleField'))
 const MarqueeSection = lazy(() => import('./sections/MarqueeSection'))
@@ -116,6 +117,7 @@ function App() {
           </Suspense>
         </>
       )}
+      <Analytics />
       </div>
     </ReactLenis>
   )
