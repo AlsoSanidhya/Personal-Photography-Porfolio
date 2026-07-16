@@ -25,10 +25,10 @@ function App() {
 
   useEffect(() => {
     if (sitePhase === 'welcome') {
-      // Transition to reveal after the 3.8 seconds Welcome animation completes
+      // Transition to reveal after the 4.9 seconds Welcome animation completes
       const phaseTimer = setTimeout(() => {
         setSitePhase('reveal')
-      }, 3800)
+      }, 4900)
 
       return () => {
         clearTimeout(phaseTimer)
@@ -58,25 +58,47 @@ function App() {
         {/* Global Premium Luxury Welcome Overlay Phase */}
         {welcomeOverlayMounted && sitePhase !== 'preloader' && (
           <div
-            className="fixed inset-0 bg-[#000000] z-[9990] flex items-center justify-center overflow-hidden"
+            className="fixed inset-0 bg-[#000000] z-[9990] select-none pointer-events-none"
             style={{
               pointerEvents: sitePhase === 'reveal' ? 'none' : 'auto',
-              background: 'radial-gradient(circle at center, rgba(245, 241, 232, 0.045) 0%, rgba(0, 0, 0, 0) 75%), #000000',
             }}
           >
-            <span
-              className="font-serif italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent tracking-[0.15em] animate-luxury-welcome pointer-events-auto"
+            {/* Soft Warm Radial Glow */}
+            <div 
+              className="absolute inset-0 z-0 animate-luxury-glow pointer-events-none"
               style={{
-                fontSize: 'clamp(65px, 9.5vw, 135px)',
-                fontWeight: 300,
-                WebkitFontSmoothing: 'antialiased',
-                MozOsxFontSmoothing: 'grayscale',
-                textRendering: 'optimizeLegibility',
-                lineHeight: '1.2',
+                background: 'radial-gradient(circle at center, rgba(245, 241, 232, 1) 0%, rgba(0, 0, 0, 0) 75%)',
+              }}
+            />
+
+            {/* Fixed-size centering wrapper for the text */}
+            <div 
+              className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+              style={{
+                width: '100vw',
+                height: '100vh',
+                overflow: 'hidden',
               }}
             >
-              Welcome
-            </span>
+              <span
+                className="font-serif italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent tracking-[0.15em] animate-luxury-welcome pointer-events-auto"
+                style={{
+                  display: 'inline-block',
+                  fontSize: 'clamp(65px, 9.5vw, 135px)',
+                  fontWeight: 300,
+                  WebkitFontSmoothing: 'antialiased',
+                  MozOsxFontSmoothing: 'grayscale',
+                  textRendering: 'optimizeLegibility',
+                  lineHeight: '1.2',
+                  transformOrigin: 'center center',
+                  backfaceVisibility: 'hidden',
+                  transform: 'translate3d(0, 0, 0)',
+                  willChange: 'opacity, transform, filter',
+                }}
+              >
+                Welcome
+              </span>
+            </div>
           </div>
         )}
 

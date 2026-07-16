@@ -8,13 +8,29 @@ interface PreloaderProps {
 export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const [expand, setExpand] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [fontsLoaded, setFontsLoaded] = useState(false)
+
+  useEffect(() => {
+    if ('fonts' in document) {
+      document.fonts.load("italic 300 1em 'Cormorant Garamond'").then(() => {
+        setFontsLoaded(true)
+      }).catch(() => {
+        setFontsLoaded(true)
+      })
+    } else {
+      setFontsLoaded(true)
+    }
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
-          clearInterval(interval)
-          setExpand(true)
+          if (fontsLoaded) {
+            clearInterval(interval)
+            setExpand(true)
+            return 100
+          }
           return 100
         }
         // Premium organic counting speed
@@ -24,7 +40,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
     }, 40)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [fontsLoaded])
 
   return (
     <motion.div

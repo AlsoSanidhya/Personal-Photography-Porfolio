@@ -171,39 +171,69 @@ h1, h2, h3, h4, h5, h6, .hero-heading {
   animation: cinematic-breathe 6s ease-in-out infinite;
 }
 
+@keyframes luxury-glow {
+  0% {
+    opacity: 0;
+  }
+  /* starts appearing at 0.4s (8.16%) */
+  8.16% {
+    opacity: 0;
+  }
+  /* fully visible warm radial glow at 2.4s (48.98%) */
+  48.98% {
+    opacity: 0.045;
+  }
+  /* hold still until 3.9s (79.59%) */
+  79.59% {
+    opacity: 0.045;
+  }
+  /* outro: fade out to 0 at 4.9s (100%) */
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-luxury-glow {
+  animation: luxury-glow 4.9s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
 @keyframes luxury-welcome {
   0% {
     opacity: 0;
-    filter: blur(18px) drop-shadow(0 0 0px rgba(255,255,255,0));
-    transform: scale(0.96);
+    filter: blur(12px) drop-shadow(0 0 0px rgba(0,0,0,0));
+    transform: scale(0.985);
+    animation-timing-function: linear;
   }
-  /* Entrance: 1.5s / 3.8s = 39.5% */
-  39.5% {
+  /* starts emerging at 0.8s (16.32%) */
+  16.32% {
+    opacity: 0;
+    filter: blur(12px) drop-shadow(0 0 0px rgba(0,0,0,0));
+    transform: scale(0.985);
+    /* Entrance (0.8s to 2.4s): use easeOutCubic */
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  /* fully visible at 2.4s (48.98%) */
+  48.98% {
     opacity: 1;
     filter: blur(0px) 
             drop-shadow(0 0 2px rgba(255, 255, 255, 0.45)) 
             drop-shadow(0 0 12px rgba(245, 241, 232, 0.22)) 
             drop-shadow(0 0 35px rgba(245, 241, 232, 0.12));
     transform: scale(1);
+    animation-timing-function: linear; /* hold static */
   }
-  /* Hold & Breathe: 1.5s to 2.8s (39.5% to 73.7%). Breathe down slightly in intensity at 56.6% */
-  56.6% {
+  /* hold perfectly still until 3.9s (79.59%) */
+  79.59% {
     opacity: 1;
     filter: blur(0px) 
-            drop-shadow(0 0 2px rgba(255, 255, 255, 0.43)) 
-            drop-shadow(0 0 12px rgba(245, 241, 232, 0.20)) 
-            drop-shadow(0 0 35px rgba(245, 241, 232, 0.10));
+            drop-shadow(0 0 2px rgba(255, 255, 255, 0.45)) 
+            drop-shadow(0 0 12px rgba(245, 241, 232, 0.22)) 
+            drop-shadow(0 0 35px rgba(245, 241, 232, 0.12));
     transform: scale(1);
+    /* Exit: ease-in-out cubic */
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
   }
-  73.7% {
-    opacity: 1;
-    filter: blur(0px) 
-            drop-shadow(0 0 2px rgba(255, 255, 255, 0.47)) 
-            drop-shadow(0 0 12px rgba(245, 241, 232, 0.24)) 
-            drop-shadow(0 0 35px rgba(245, 241, 232, 0.14));
-    transform: scale(1);
-  }
-  /* Exit: 2.8s to 3.8s (73.7% to 100%) - scale to 1.03, blur to 12px, opacity to 0 */
+  /* exit animation completes at 4.9s (100%) */
   100% {
     opacity: 0;
     filter: blur(12px) drop-shadow(0 0 0px rgba(255,255,255,0));
@@ -212,5 +242,5 @@ h1, h2, h3, h4, h5, h6, .hero-heading {
 }
 
 .animate-luxury-welcome {
-  animation: luxury-welcome 3.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation: luxury-welcome 4.9s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
