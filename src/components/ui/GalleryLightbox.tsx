@@ -67,6 +67,7 @@ export const GalleryLightbox: React.FC<GalleryLightboxProps> = ({ images, initia
   return (
     <AnimatePresence>
       <motion.div
+        key="lightbox-overlay"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

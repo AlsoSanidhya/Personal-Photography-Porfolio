@@ -55,7 +55,7 @@ function App() {
       {/* Global Preloader Phase */}
       <AnimatePresence mode="wait">
         {sitePhase === 'preloader' && (
-          <Preloader onComplete={() => setSitePhase('welcome')} />
+          <Preloader key="preloader" onComplete={() => setSitePhase('welcome')} />
         )}
       </AnimatePresence>
 
@@ -63,10 +63,11 @@ function App() {
       <AnimatePresence>
         {sitePhase === 'welcome' && (
           <motion.div
+            key="welcome-overlay"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.0, ease: 'easeInOut' }}
-            className="fixed inset-0 bg-[#000000] z-[9990] flex items-center justify-center overflow-hidden"
+            className={`fixed inset-0 bg-[#000000] z-[9990] flex items-center justify-center overflow-hidden ${sitePhase !== 'welcome' ? 'pointer-events-none' : ''}`}
           >
             {/* Subtle cinematic bloom behind the text */}
             <motion.div 

@@ -66,6 +66,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ onNavigate }) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            key="mobile-menu-overlay"
             initial="closed"
             animate="open"
             exit="closed"
