@@ -20,7 +20,7 @@ interface ParticleFieldProps {
   isReveal?: boolean
 }
 
-export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true }) => {
+export const ParticleField: React.FC<ParticleFieldProps> = React.memo(({ isReveal = true }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [reducedMotion, setReducedMotion] = useState(() => 
     typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false
@@ -256,6 +256,6 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({ isReveal = true })
       style={{ mixBlendMode: 'screen' }}
     />
   )
-}
+})
 
 export default ParticleField

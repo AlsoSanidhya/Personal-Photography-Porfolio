@@ -8,7 +8,7 @@ interface HeroSectionProps {
   isReveal?: boolean
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) => {
+export const HeroSection: React.FC<HeroSectionProps> = React.memo(({ isReveal = false }) => {
   const [typingComplete, setTypingComplete] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
@@ -90,13 +90,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
   const wordVariants = {
     hidden: { 
       opacity: 0, 
-      y: 20,
-      filter: isMobile ? 'blur(0px)' : 'blur(5px)' // blur is too expensive on mobile GPUs
+      y: 20
     },
     visible: {
       opacity: 1,
       y: 0,
-      filter: 'blur(0px)',
       transition: { 
         duration: 1.1, 
         ease: [0.25, 1, 0.5, 1] as const
@@ -287,6 +285,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isReveal = false }) =>
       </div>
     </motion.section>
   )
-}
+})
 
 export default HeroSection

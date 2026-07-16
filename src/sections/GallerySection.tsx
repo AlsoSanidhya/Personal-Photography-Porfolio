@@ -7,7 +7,7 @@ import ParallaxText from '../components/ui/ParallaxText'
 import GalleryLightbox from '../components/ui/GalleryLightbox'
 import { ArrowLeft, Images } from 'lucide-react'
 
-export const GallerySection: React.FC = () => {
+export const GallerySection: React.FC = React.memo(() => {
   const { albums } = PORTFOLIO_DATA
   const [selectedAlbumId, setSelectedAlbumId] = React.useState<string | null>(null)
   const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null)
@@ -127,7 +127,6 @@ export const GallerySection: React.FC = () => {
                     whileInView={{ opacity: 1, scale: 1, y: 0 }}
                     viewport={{ once: true, margin: '50px' }}
                     whileTap={{ scale: 0.98 }}
-                    style={{ willChange: "opacity, transform" }}
                     exit={{ opacity: 0, scale: 0.94 }}
                     transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
                     key={item.id}
@@ -160,6 +159,6 @@ export const GallerySection: React.FC = () => {
       )}
     </section>
   )
-}
+})
 
 export default GallerySection

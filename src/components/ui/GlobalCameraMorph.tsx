@@ -7,7 +7,7 @@ interface GlobalCameraMorphProps {
   isReveal?: boolean
 }
 
-export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ isReveal = true }) => {
+export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = React.memo(({ isReveal = true }) => {
   const { scrollYProgress: scrollProgress } = useScroll()
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -374,7 +374,7 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ isReveal =
       masterGroup.rotation.z = scrollRotZ
 
       // Render only if something changed or we are idling visibly
-      if (isProgressChanged || !isScrolling || !reducedMotion) {
+      if (isProgressChanged || (!isScrolling && !reducedMotion)) {
         renderer.render(scene, camera)
       }
     }
@@ -447,6 +447,6 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = ({ isReveal =
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
     </motion.div>
   )
-}
+})
 
 export default GlobalCameraMorph

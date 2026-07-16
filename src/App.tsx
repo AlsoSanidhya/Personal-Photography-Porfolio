@@ -13,6 +13,7 @@ const MyWorldSection = lazy(() => import('./sections/MyWorldSection'))
 const ContactSection = lazy(() => import('./sections/ContactSection'))
 const GlobalCameraMorph = lazy(() => import('./components/ui/GlobalCameraMorph'))
 const AudioPlayer = lazy(() => import('./components/ui/AudioPlayer'))
+const LazyMount = lazy(() => import('./components/ui/LazyMount'))
 
 function App() {
   const [sitePhase, setSitePhase] = useState<'preloader' | 'welcome' | 'reveal'>('preloader')
@@ -73,7 +74,7 @@ function App() {
               animate={{ opacity: [0.08, 0.12, 0.08] }}
               exit={{ opacity: 0 }}
               transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute w-[600px] h-[600px] rounded-full pointer-events-none filter blur-[100px]"
+              className="absolute w-[600px] h-[600px] rounded-full pointer-events-none"
               style={{ 
                 background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%)',
                 transform: 'translate3d(0,0,0)',
@@ -129,11 +130,15 @@ function App() {
           <Suspense fallback={null}>
             <GlobalCameraMorph isReveal={isReveal} />
             <ParticleField isReveal={isReveal} />
-            <MarqueeSection />
-            <AboutSection />
-            <GallerySection />
-            <MyWorldSection />
-            <ContactSection />
+            <LazyMount rootMargin="800px 0px">
+              <MarqueeSection />
+            </LazyMount>
+            <LazyMount rootMargin="1200px 0px">
+              <AboutSection />
+              <GallerySection />
+              <MyWorldSection />
+              <ContactSection />
+            </LazyMount>
             <AudioPlayer />
           </Suspense>
         </>
