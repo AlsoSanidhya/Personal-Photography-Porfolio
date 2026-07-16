@@ -2,7 +2,7 @@
 const heroImagesGlob = import.meta.glob('../assets/originals/hero/*.webp', { eager: true }) as Record<string, { default: string }>
 export const HERO_SLIDESHOW_IMAGES = Object.values(heroImagesGlob).map(mod => mod.default)
 
-const galleryImagesGlob = import.meta.glob('../assets/originals/gallery/*.webp', { eager: true }) as Record<string, { default: string }>
+const galleryImagesGlob = import.meta.glob('../assets/originals/gallery/**/*.webp', { eager: true }) as Record<string, { default: string }>
 const GALLERY_IMAGE_URLS = Object.values(galleryImagesGlob).map(mod => mod.default)
 
 export interface GalleryItem {
@@ -11,11 +11,59 @@ export interface GalleryItem {
   imageUrl: string
 }
 
+export interface Album {
+  id: string
+  year: string
+  coverImage: string
+  images: GalleryItem[]
+}
+
 export interface SocialLink {
   name: string
   url: string
   handle: string
 }
+
+const albumsMap: Record<string, GalleryItem[]> = {}
+const flatGallery: GalleryItem[] = []
+
+Object.entries(galleryImagesGlob).forEach(([path, mod], idx) => {
+  const url = mod.default
+  const filename = path.split('/').pop() || ''
+  const cleanName = filename.split('.')[0].replace(/[-_]/g, ' ')
+  
+  const item = {
+    id: `g${idx + 1}`,
+    title: cleanName || `Photograph ${idx + 1}`,
+    imageUrl: url
+  }
+  
+  flatGallery.push(item)
+  
+  const parts = path.split('/gallery/')
+  if (parts.length > 1) {
+    const subPath = parts[1]
+    const subParts = subPath.split('/')
+    if (subParts.length > 1) {
+      const year = subParts[0]
+      if (!albumsMap[year]) albumsMap[year] = []
+      albumsMap[year].push(item)
+    } else {
+      const year = "Other"
+      if (!albumsMap[year]) albumsMap[year] = []
+      albumsMap[year].push(item)
+    }
+  }
+})
+
+const ALBUMS: Album[] = Object.entries(albumsMap)
+  .map(([year, images]) => ({
+    id: `album-${year}`,
+    year,
+    coverImage: images[0]?.imageUrl || '',
+    images
+  }))
+  .sort((a, b) => b.year.localeCompare(a.year))
 
 const safeGalleryImage = (index: number) => GALLERY_IMAGE_URLS.length > 0 ? GALLERY_IMAGE_URLS[index % GALLERY_IMAGE_URLS.length] : ''
 
@@ -42,17 +90,9 @@ I enjoy experimenting with new ideas, building projects, and exploring different
 
   marqueeGifs: GALLERY_IMAGE_URLS.length > 0 ? GALLERY_IMAGE_URLS : HERO_SLIDESHOW_IMAGES,
 
-  gallery: GALLERY_IMAGE_URLS.map((url, idx) => {
-    // Attempt to parse a clean title from the filename
-    const filename = url.split('/').pop() || ''
-    const cleanName = filename.split('.')[0].replace(/[-_]/g, ' ')
-    
-    return {
-      id: `g${idx + 1}`,
-      title: cleanName || `Photograph ${idx + 1}`,
-      imageUrl: url
-    }
-  }) as GalleryItem[],
+  gallery: flatGallery,
+
+  albums: ALBUMS,
 
   socials: [
     { 
