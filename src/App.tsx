@@ -47,6 +47,17 @@ function App() {
     }
   }, [sitePhase])
 
+  const [welcomeOverlayMounted, setWelcomeOverlayMounted] = useState(true)
+
+  useEffect(() => {
+    if (sitePhase === 'reveal') {
+      const timer = setTimeout(() => {
+        setWelcomeOverlayMounted(false)
+      }, 1200) // 1.2s to fully allow the 1.0s exit transition to finish
+      return () => clearTimeout(timer)
+    }
+  }, [sitePhase])
+
   const isReveal = sitePhase === 'reveal'
 
   return (
@@ -60,55 +71,51 @@ function App() {
       </AnimatePresence>
 
       {/* Global Apple-Inspired Welcome Overlay Phase */}
-      <AnimatePresence>
-        {sitePhase === 'welcome' && (
-          <motion.div
-            key="welcome-overlay"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.0, ease: 'easeInOut' }}
-            className={`fixed inset-0 bg-[#000000] z-[9990] flex items-center justify-center overflow-hidden ${sitePhase !== 'welcome' ? 'pointer-events-none' : ''}`}
-          >
-            {/* Subtle cinematic bloom behind the text */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0.08, 0.12, 0.08] }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute w-[600px] h-[600px] rounded-full pointer-events-none"
-              style={{ 
-                background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%)',
-                transform: 'translate3d(0,0,0)',
-                willChange: 'opacity'
-              }}
-            />
+      {welcomeOverlayMounted && sitePhase !== 'preloader' && (
+        <div
+          className="fixed inset-0 bg-[#000000] z-[9990] flex items-center justify-center overflow-hidden transition-all duration-1000 ease-in-out"
+          style={{
+            opacity: sitePhase === 'reveal' ? 0 : 1,
+            pointerEvents: sitePhase === 'reveal' ? 'none' : 'auto',
+            visibility: sitePhase === 'reveal' ? 'hidden' : 'visible',
+          }}
+        >
+          {/* Subtle cinematic bloom behind the text */}
+          <div 
+            className="absolute w-[600px] h-[600px] rounded-full pointer-events-none animate-pulse"
+            style={{ 
+              background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%)',
+              transform: 'translate3d(0,0,0)',
+              opacity: sitePhase === 'reveal' ? 0 : 0.1,
+              transition: 'opacity 1s ease-in-out'
+            }}
+          />
 
-            <AnimatePresence>
-              {showHello && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
-                  className="flex items-center justify-center pointer-events-none"
+          <AnimatePresence>
+            {showHello && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+                className="flex items-center justify-center pointer-events-none"
+              >
+                <span
+                  className="font-serif font-light italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent tracking-[0.12em] animate-cinematic-breathe pointer-events-auto"
+                  style={{
+                    fontSize: 'clamp(75px, 8vw, 115px)',
+                    WebkitFontSmoothing: 'antialiased',
+                    MozOsxFontSmoothing: 'grayscale',
+                    textRendering: 'optimizeLegibility',
+                  }}
                 >
-                  <span
-                    className="font-serif font-light italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent tracking-[0.12em] animate-cinematic-breathe pointer-events-auto"
-                    style={{
-                      fontSize: 'clamp(75px, 8vw, 115px)',
-                      WebkitFontSmoothing: 'antialiased',
-                      MozOsxFontSmoothing: 'grayscale',
-                      textRendering: 'optimizeLegibility',
-                    }}
-                  >
-                    Welcome.
-                  </span>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                  Welcome.
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
       
       {/* Main website components - always mounted for WebGL scene pre-compilation, opacity managed via isReveal */}
       {sitePhase !== 'preloader' && (
