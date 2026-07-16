@@ -170,3 +170,47 @@ h1, h2, h3, h4, h5, h6, .hero-heading {
 .animate-cinematic-breathe {
   animation: cinematic-breathe 6s ease-in-out infinite;
 }
+
+@keyframes luxury-welcome {
+  0% {
+    opacity: 0;
+    filter: blur(18px) drop-shadow(0 0 0px rgba(255,255,255,0));
+    transform: scale(0.96);
+  }
+  /* Entrance: 1.5s / 3.8s = 39.5% */
+  39.5% {
+    opacity: 1;
+    filter: blur(0px) 
+            drop-shadow(0 0 2px rgba(255, 255, 255, 0.45)) 
+            drop-shadow(0 0 12px rgba(245, 241, 232, 0.22)) 
+            drop-shadow(0 0 35px rgba(245, 241, 232, 0.12));
+    transform: scale(1);
+  }
+  /* Hold & Breathe: 1.5s to 2.8s (39.5% to 73.7%). Breathe down slightly in intensity at 56.6% */
+  56.6% {
+    opacity: 1;
+    filter: blur(0px) 
+            drop-shadow(0 0 2px rgba(255, 255, 255, 0.43)) 
+            drop-shadow(0 0 12px rgba(245, 241, 232, 0.20)) 
+            drop-shadow(0 0 35px rgba(245, 241, 232, 0.10));
+    transform: scale(1);
+  }
+  73.7% {
+    opacity: 1;
+    filter: blur(0px) 
+            drop-shadow(0 0 2px rgba(255, 255, 255, 0.47)) 
+            drop-shadow(0 0 12px rgba(245, 241, 232, 0.24)) 
+            drop-shadow(0 0 35px rgba(245, 241, 232, 0.14));
+    transform: scale(1);
+  }
+  /* Exit: 2.8s to 3.8s (73.7% to 100%) - scale to 1.03, blur to 12px, opacity to 0 */
+  100% {
+    opacity: 0;
+    filter: blur(12px) drop-shadow(0 0 0px rgba(255,255,255,0));
+    transform: scale(1.03);
+  }
+}
+
+.animate-luxury-welcome {
+  animation: luxury-welcome 3.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}

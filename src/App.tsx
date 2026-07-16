@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import { ReactLenis } from 'lenis/react'
 import Preloader from './components/ui/Preloader'
 import { useEffect, useState, lazy, Suspense } from 'react'
@@ -17,7 +17,7 @@ const LazyMount = lazy(() => import('./components/ui/LazyMount'))
 
 function App() {
   const [sitePhase, setSitePhase] = useState<'preloader' | 'welcome' | 'reveal'>('preloader')
-  const [showHello, setShowHello] = useState(false)
+  const [welcomeOverlayMounted, setWelcomeOverlayMounted] = useState(true)
 
   useEffect(() => {
     document.title = `${PORTFOLIO_DATA.personal.name} -- Photography Portfolio`
@@ -25,36 +25,21 @@ function App() {
 
   useEffect(() => {
     if (sitePhase === 'welcome') {
-      const showTimer = setTimeout(() => {
-        setShowHello(true)
-      }, 50)
-
-      // Hello stays visible for 2 seconds (0.6s fade-in completes at 650ms, holds for 2.0s)
-      const helloTimer = setTimeout(() => {
-        setShowHello(false)
-      }, 2650)
-
-      // Transition to reveal after Hello fade-out finishes (2.65s + 0.8s)
+      // Transition to reveal after the 3.8 seconds Welcome animation completes
       const phaseTimer = setTimeout(() => {
         setSitePhase('reveal')
-      }, 3450)
+      }, 3800)
 
       return () => {
-        clearTimeout(showTimer)
-        clearTimeout(helloTimer)
         clearTimeout(phaseTimer)
       }
     }
   }, [sitePhase])
 
-  const [welcomeOverlayMounted, setWelcomeOverlayMounted] = useState(true)
-
   useEffect(() => {
     if (sitePhase === 'reveal') {
-      const timer = setTimeout(() => {
-        setWelcomeOverlayMounted(false)
-      }, 1200) // 1.2s to fully allow the 1.0s exit transition to finish
-      return () => clearTimeout(timer)
+      // Unmount the welcome overlay immediately once the reveal phase starts
+      setWelcomeOverlayMounted(false)
     }
   }, [sitePhase])
 
@@ -63,80 +48,58 @@ function App() {
   return (
     <ReactLenis root options={{ lerp: 0.08, smoothWheel: true }}>
       <div className="bg-[#050505] min-h-screen text-[#F5F1E8] select-none relative z-20">
-      {/* Global Preloader Phase */}
-      <AnimatePresence mode="wait">
-        {sitePhase === 'preloader' && (
-          <Preloader key="preloader" onComplete={() => setSitePhase('welcome')} />
-        )}
-      </AnimatePresence>
+        {/* Global Preloader Phase */}
+        <AnimatePresence mode="wait">
+          {sitePhase === 'preloader' && (
+            <Preloader key="preloader" onComplete={() => setSitePhase('welcome')} />
+          )}
+        </AnimatePresence>
 
-      {/* Global Apple-Inspired Welcome Overlay Phase */}
-      {welcomeOverlayMounted && sitePhase !== 'preloader' && (
-        <div
-          className="fixed inset-0 bg-[#000000] z-[9990] flex items-center justify-center overflow-hidden transition-all duration-1000 ease-in-out"
-          style={{
-            opacity: sitePhase === 'reveal' ? 0 : 1,
-            pointerEvents: sitePhase === 'reveal' ? 'none' : 'auto',
-            visibility: sitePhase === 'reveal' ? 'hidden' : 'visible',
-          }}
-        >
-          {/* Subtle cinematic bloom behind the text */}
-          <div 
-            className="absolute w-[600px] h-[600px] rounded-full pointer-events-none animate-pulse"
-            style={{ 
-              background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%)',
-              transform: 'translate3d(0,0,0)',
-              opacity: sitePhase === 'reveal' ? 0 : 0.1,
-              transition: 'opacity 1s ease-in-out'
+        {/* Global Premium Luxury Welcome Overlay Phase */}
+        {welcomeOverlayMounted && sitePhase !== 'preloader' && (
+          <div
+            className="fixed inset-0 bg-[#000000] z-[9990] flex items-center justify-center overflow-hidden"
+            style={{
+              pointerEvents: sitePhase === 'reveal' ? 'none' : 'auto',
+              background: 'radial-gradient(circle at center, rgba(245, 241, 232, 0.045) 0%, rgba(0, 0, 0, 0) 75%), #000000',
             }}
-          />
+          >
+            <span
+              className="font-serif italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent tracking-[0.15em] animate-luxury-welcome pointer-events-auto"
+              style={{
+                fontSize: 'clamp(65px, 9.5vw, 135px)',
+                fontWeight: 300,
+                WebkitFontSmoothing: 'antialiased',
+                MozOsxFontSmoothing: 'grayscale',
+                textRendering: 'optimizeLegibility',
+                lineHeight: '1.2',
+              }}
+            >
+              Welcome
+            </span>
+          </div>
+        )}
 
-          <AnimatePresence>
-            {showHello && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
-                className="flex items-center justify-center pointer-events-none"
-              >
-                <span
-                  className="font-serif font-light italic select-none text-center bg-gradient-to-b from-[#FFFFFF] via-[#F5F1E8] to-[#B8B1A6] bg-clip-text text-transparent tracking-[0.12em] animate-cinematic-breathe pointer-events-auto"
-                  style={{
-                    fontSize: 'clamp(75px, 8vw, 115px)',
-                    WebkitFontSmoothing: 'antialiased',
-                    MozOsxFontSmoothing: 'grayscale',
-                    textRendering: 'optimizeLegibility',
-                  }}
-                >
-                  Welcome.
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
-      
-      {/* Main website components - always mounted for WebGL scene pre-compilation, opacity managed via isReveal */}
-      {sitePhase !== 'preloader' && (
-        <>
-          <HeroSection isReveal={isReveal} />
-          <Suspense fallback={null}>
-            <GlobalCameraMorph isReveal={isReveal} />
-            <ParticleField isReveal={isReveal} />
-            <LazyMount rootMargin="800px 0px">
-              <MarqueeSection />
-            </LazyMount>
-            <LazyMount rootMargin="1200px 0px">
-              <AboutSection />
-              <GallerySection />
-              <MyWorldSection />
-              <ContactSection />
-            </LazyMount>
-            <AudioPlayer />
-          </Suspense>
-        </>
-      )}
+        {/* Main website components - always mounted for WebGL scene pre-compilation, opacity managed via isReveal */}
+        {sitePhase !== 'preloader' && (
+          <>
+            <HeroSection isReveal={isReveal} />
+            <Suspense fallback={null}>
+              <GlobalCameraMorph isReveal={isReveal} />
+              <ParticleField isReveal={isReveal} />
+              <LazyMount rootMargin="800px 0px">
+                <MarqueeSection />
+              </LazyMount>
+              <LazyMount rootMargin="1200px 0px">
+                <AboutSection />
+                <GallerySection />
+                <MyWorldSection />
+                <ContactSection />
+              </LazyMount>
+              <AudioPlayer />
+            </Suspense>
+          </>
+        )}
       </div>
     </ReactLenis>
   )
