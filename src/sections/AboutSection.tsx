@@ -10,6 +10,10 @@ import { motion } from 'framer-motion'
 export const AboutSection: React.FC = () => {
   const { bio } = PORTFOLIO_DATA.personal
 
+  // Dynamically find the WebP version of the hero portrait image (DSC_1305.webp)
+  const portraitItem = PORTFOLIO_DATA.gallery.find(item => item.imageUrl.includes('DSC_1305'))
+  const portraitUrl = portraitItem ? portraitItem.imageUrl : PORTFOLIO_DATA.gallery[0]?.imageUrl
+
   const scrollToContact = () => {
     const element = document.getElementById('contact')
     if (element) {
@@ -17,13 +21,36 @@ export const AboutSection: React.FC = () => {
     }
   }
 
+  // Small custom Sparkle SVG divider component
+  const SparkleIcon = () => (
+    <svg 
+      width="10" 
+      height="10" 
+      viewBox="0 0 24 24" 
+      fill="currentColor" 
+      className="text-[#8B5CF6] opacity-30 w-2.5 h-2.5 my-4"
+    >
+      <path d="M12 0c0 6.627-5.373 12-12 12 6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z" />
+    </svg>
+  )
+
   return (
     <section
       id="about"
-      className="relative min-h-[100dvh] flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-24 md:py-44 bg-transparent z-10 select-none overflow-hidden"
+      className="relative min-h-[100dvh] flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 pt-24 pb-32 md:py-44 bg-transparent z-10 select-none overflow-hidden"
     >
-      {/* Background Cinematic Glow */}
-      <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />
+      {/* Background Cinematic Glow - Desktop Only */}
+      <div className="absolute inset-0 hidden md:block cinematic-glow pointer-events-none z-0" />
+
+      {/* Mobile-Only Premium Vignette/Noise Background */}
+      <div className="absolute inset-0 block md:hidden pointer-events-none z-0 overflow-hidden">
+        {/* Faint radial glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.06)_0%,transparent_70%)]" />
+        {/* Subtle noise */}
+        <div className="absolute inset-0 bg-noise opacity-[0.015]" />
+        {/* Slight vignette */}
+        <div className="absolute inset-0" style={{ boxShadow: 'inset 0 0 100px rgba(0,0,0,0.8)' }} />
+      </div>
 
       {/* Floating 3D Corner Canvas Objects - Top Left: Moon */}
       <FadeIn
@@ -130,8 +157,34 @@ export const AboutSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Divider ✦ */}
-        <div className="text-[#8B5CF6]/50 text-xs mb-8 tracking-widest pointer-events-none select-none filter drop-shadow-[0_0_4px_rgba(139,92,246,0.3)]">✦</div>
+        {/* Portrait Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="flex justify-center items-center mb-10"
+        >
+          <motion.div
+            animate={{ y: [-2, 2, -2] }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: 'easeInOut'
+            }}
+            className="w-[120px] h-[120px] rounded-full overflow-hidden border border-white/20 shadow-lg relative flex items-center justify-center"
+            style={{
+              boxShadow: '0 0 20px rgba(139, 92, 246, 0.15)',
+            }}
+          >
+            <img
+              src={portraitUrl}
+              alt="Sanidhya Negi"
+              className="w-full h-full object-cover rounded-full"
+              loading="lazy"
+            />
+          </motion.div>
+        </motion.div>
 
         {/* Card 1 */}
         <motion.div
@@ -139,7 +192,7 @@ export const AboutSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="w-full bg-[#050505]/40 border border-white/5 backdrop-blur-md rounded-2xl p-[22px] mb-[18px]"
+          className="w-full bg-[#121212]/85 border border-white/5 backdrop-blur-[4px] rounded-[18px] p-5 shadow-md"
         >
           <p 
             className="font-sans font-light text-[18px] sm:text-[19px] leading-[1.9] text-[#E5E0D8] mx-auto"
@@ -149,8 +202,8 @@ export const AboutSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Divider • */}
-        <div className="text-[#8B5CF6]/40 text-[9px] mb-[18px] pointer-events-none select-none filter drop-shadow-[0_0_3px_rgba(139,92,246,0.2)]">•</div>
+        {/* Sparkle Divider */}
+        <SparkleIcon />
 
         {/* Card 2 */}
         <motion.div
@@ -158,7 +211,7 @@ export const AboutSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="w-full bg-[#050505]/40 border border-white/5 backdrop-blur-md rounded-2xl p-[22px] mb-[18px]"
+          className="w-full bg-[#121212]/85 border border-white/5 backdrop-blur-[4px] rounded-[18px] p-5 shadow-md"
         >
           <p 
             className="font-sans font-light text-[18px] sm:text-[19px] leading-[1.9] text-[#E5E0D8] mx-auto"
@@ -168,8 +221,8 @@ export const AboutSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Divider • */}
-        <div className="text-[#8B5CF6]/40 text-[9px] mb-[18px] pointer-events-none select-none filter drop-shadow-[0_0_3px_rgba(139,92,246,0.2)]">•</div>
+        {/* Sparkle Divider */}
+        <SparkleIcon />
 
         {/* Card 3 */}
         <motion.div
@@ -177,7 +230,7 @@ export const AboutSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="w-full bg-[#050505]/40 border border-white/5 backdrop-blur-md rounded-2xl p-[22px] mb-12"
+          className="w-full bg-[#121212]/85 border border-white/5 backdrop-blur-[4px] rounded-[18px] p-5 shadow-md"
         >
           <p 
             className="font-sans font-light text-[18px] sm:text-[19px] leading-[1.9] text-[#E5E0D8] mx-auto"
@@ -193,7 +246,7 @@ export const AboutSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="w-full flex justify-center"
+          className="w-full flex justify-center mt-10"
         >
           <ContactButton onClick={scrollToContact} />
         </motion.div>

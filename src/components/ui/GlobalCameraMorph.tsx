@@ -385,10 +385,10 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = React.memo(({
             targetTranslateY = 0
           } else if (progress >= 0.15 && progress < 0.35) {
             const t = (progress - 0.15) / 0.20
-            targetOpacity = 1.0 - t * 0.85 // 1.0 -> 0.15
+            targetOpacity = 1.0 - t // 1.0 -> 0.0
             targetTranslateY = t * 120 // moves down by 120px
           } else {
-            targetOpacity = 0.15
+            targetOpacity = 0.0
             targetTranslateY = 120
           }
           
