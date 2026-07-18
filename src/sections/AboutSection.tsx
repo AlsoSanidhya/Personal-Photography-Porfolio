@@ -5,6 +5,7 @@ import AnimatedText from '../components/ui/AnimatedText'
 import ContactButton from '../components/ui/ContactButton'
 import ParallaxText from '../components/ui/ParallaxText'
 import ThreeDObject from '../components/ui/ThreeDSideObjects'
+import { motion } from 'framer-motion'
 
 export const AboutSection: React.FC = () => {
   const { bio } = PORTFOLIO_DATA.personal
@@ -19,7 +20,7 @@ export const AboutSection: React.FC = () => {
   return (
     <section
       id="about"
-      className="relative min-h-[100dvh] flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-32 md:py-44 bg-transparent z-10 select-none overflow-hidden"
+      className="relative min-h-[100dvh] flex flex-col justify-center items-center px-5 sm:px-8 md:px-10 py-24 md:py-44 bg-transparent z-10 select-none overflow-hidden"
     >
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 cinematic-glow pointer-events-none z-0" />
@@ -68,8 +69,8 @@ export const AboutSection: React.FC = () => {
         <ThreeDObject type="group3d" />
       </FadeIn>
 
-      {/* Center Content Block */}
-      <div className="relative z-20 flex flex-col items-center text-center max-w-4xl">
+      {/* --- DESKTOP LAYOUT (768px and above) --- */}
+      <div className="hidden md:flex flex-col items-center text-center max-w-4xl relative z-20">
         {/* Heading */}
         <FadeIn y={40} delay={0} className="mb-14 sm:mb-20">
           <ParallaxText baseY={50}>
@@ -99,6 +100,103 @@ export const AboutSection: React.FC = () => {
         <FadeIn y={30} delay={0.4}>
           <ContactButton onClick={scrollToContact} />
         </FadeIn>
+      </div>
+
+      {/* --- MOBILE LAYOUT (max-width: 768px) --- */}
+      <div className="flex md:hidden flex-col items-center w-full max-w-[320px] xs:max-w-[350px] sm:max-w-[440px] relative z-20">
+        {/* Heading */}
+        <motion.h2
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="font-serif font-light text-center uppercase tracking-[0.08em] text-[48px] sm:text-[56px] text-[#F5F1E8] mb-8"
+          style={{ textShadow: '0 0 15px rgba(245, 241, 232, 0.15)' }}
+        >
+          ABOUT ME
+        </motion.h2>
+
+        {/* Intro Quote Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
+          className="w-[90%] mx-auto bg-white/5 border border-white/10 rounded-[18px] backdrop-blur-[6px] p-5 mb-8 text-center"
+          style={{ boxShadow: '0 0 20px rgba(139, 92, 246, 0.08)' }}
+        >
+          <p className="font-serif italic font-light text-[17px] leading-relaxed text-[#F5F1E8] tracking-wide">
+            Every frame has a story.<br />Welcome to mine.
+          </p>
+        </motion.div>
+
+        {/* Divider ✦ */}
+        <div className="text-[#8B5CF6]/50 text-xs mb-8 tracking-widest pointer-events-none select-none filter drop-shadow-[0_0_4px_rgba(139,92,246,0.3)]">✦</div>
+
+        {/* Card 1 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="w-full bg-[#050505]/40 border border-white/5 backdrop-blur-md rounded-2xl p-[22px] mb-[18px]"
+        >
+          <p 
+            className="font-sans font-light text-[18px] sm:text-[19px] leading-[1.9] text-[#E5E0D8] mx-auto"
+            style={{ maxWidth: '26ch', letterSpacing: '0.2px' }}
+          >
+            I'm Sanidhya, an undergrad who enjoys exploring different creative fields. Photography is one of my favorite hobbies, but it isn't the only thing that defines me. I'm passionate about technology, editing, design, content creation, and constantly learning new skills.
+          </p>
+        </motion.div>
+
+        {/* Divider • */}
+        <div className="text-[#8B5CF6]/40 text-[9px] mb-[18px] pointer-events-none select-none filter drop-shadow-[0_0_3px_rgba(139,92,246,0.2)]">•</div>
+
+        {/* Card 2 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="w-full bg-[#050505]/40 border border-white/5 backdrop-blur-md rounded-2xl p-[22px] mb-[18px]"
+        >
+          <p 
+            className="font-sans font-light text-[18px] sm:text-[19px] leading-[1.9] text-[#E5E0D8] mx-auto"
+            style={{ maxWidth: '26ch', letterSpacing: '0.2px' }}
+          >
+            I enjoy experimenting with new ideas, building projects, and exploring different creative outlets. Rather than trying to be an expert in just one thing, I believe in continuous learning, creating, and growing through every experience.
+          </p>
+        </motion.div>
+
+        {/* Divider • */}
+        <div className="text-[#8B5CF6]/40 text-[9px] mb-[18px] pointer-events-none select-none filter drop-shadow-[0_0_3px_rgba(139,92,246,0.2)]">•</div>
+
+        {/* Card 3 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="w-full bg-[#050505]/40 border border-white/5 backdrop-blur-md rounded-2xl p-[22px] mb-12"
+        >
+          <p 
+            className="font-sans font-light text-[18px] sm:text-[19px] leading-[1.9] text-[#E5E0D8] mx-auto"
+            style={{ maxWidth: '26ch', letterSpacing: '0.2px' }}
+          >
+            This portfolio is a collection of the moments I capture, the projects I build, and the creativity I bring to everything I do.
+          </p>
+        </motion.div>
+
+        {/* Contact CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="w-full flex justify-center"
+        >
+          <ContactButton onClick={scrollToContact} />
+        </motion.div>
       </div>
     </section>
   )

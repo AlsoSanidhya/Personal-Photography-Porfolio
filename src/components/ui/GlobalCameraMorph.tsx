@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { usePerformanceTier } from '../../hooks/usePerformanceTier'
-import { motion, useScroll } from 'framer-motion'
+import { useScroll } from 'framer-motion'
 
 interface GlobalCameraMorphProps {
   isReveal?: boolean
@@ -373,6 +373,33 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = React.memo(({
       masterGroup.rotation.y = currentTiltY
       masterGroup.rotation.z = scrollRotZ
 
+      // Custom mobile shift and opacity check
+      if (containerRef.current) {
+        const isMobile = window.innerWidth <= 768
+        if (isMobile) {
+          let targetOpacity = 1.0
+          let targetTranslateY = 0
+          
+          if (progress < 0.15) {
+            targetOpacity = 1.0
+            targetTranslateY = 0
+          } else if (progress >= 0.15 && progress < 0.35) {
+            const t = (progress - 0.15) / 0.20
+            targetOpacity = 1.0 - t * 0.85 // 1.0 -> 0.15
+            targetTranslateY = t * 120 // moves down by 120px
+          } else {
+            targetOpacity = 0.15
+            targetTranslateY = 120
+          }
+          
+          containerRef.current.style.opacity = `${targetOpacity * (isReveal ? 1 : 0)}`
+          containerRef.current.style.transform = `translate3d(-50%, calc(-50% + ${targetTranslateY}px), 0)`
+        } else {
+          containerRef.current.style.opacity = isReveal ? '1' : '0'
+          containerRef.current.style.transform = 'translate3d(-50%, -50%, 0)'
+        }
+      }
+
       // Render only if something changed or we are idling visibly
       if (isProgressChanged || (!isScrolling && !reducedMotion)) {
         renderer.render(scene, camera)
@@ -419,21 +446,12 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = React.memo(({
   }, [scrollProgress, performanceTier])
 
   return (
-    <motion.div
+    <div
       ref={containerRef}
-      initial={{ opacity: 0 }}
-      animate={isReveal ? { opacity: 1 } : { opacity: 0 }}
-      transition={{
-        duration: 1.5,
-        ease: [0.22, 1, 0.36, 1],
-        delay: 0.8
-      }}
       style={{
         position: 'fixed',
         left: '50%',
         top: '50%',
-        x: '-50%',
-        y: '-50%',
         width: '100vw',
         height: '100vh',
         pointerEvents: 'none',
@@ -441,11 +459,14 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = React.memo(({
         overflow: 'visible',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        transform: 'translate3d(-50%, -50%, 0)',
+        opacity: isReveal ? 1 : 0,
+        transition: 'opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s'
       }}
     >
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', pointerEvents: 'none' }} />
-    </motion.div>
+    </div>
   )
 })
 
