@@ -32,22 +32,19 @@ body {
 
 /* Base text shadows for luxury glow */
 h1, h2, h3, h4, h5, h6, .hero-heading {
-  text-shadow: 
-    0 0 10px rgba(255, 255, 255, 0.04),
-    0 0 25px rgba(255, 255, 255, 0.03);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
 }
 
 .hero-heading {
   font-family: var(--font-serif);
   font-weight: 500;
   color: #F5F1E8;
-  transition: all 0.5s ease;
+  transition: text-shadow 0.5s ease;
+  contain: layout paint;
 }
 
 .hero-heading:hover {
-  text-shadow:
-    0 0 15px rgba(255, 255, 255, 0.08),
-    0 0 30px rgba(255, 255, 255, 0.05);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 /* Luxury reflective sweep effect (watch/premium site style) */

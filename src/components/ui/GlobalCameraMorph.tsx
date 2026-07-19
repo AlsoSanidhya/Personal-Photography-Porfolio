@@ -243,6 +243,15 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = React.memo(({
 
     let isScrolling = false
     let scrollTimeout: ReturnType<typeof setTimeout>
+    let isVisible = true
+    const observer = new IntersectionObserver(([entry]) => {
+      // Pause completely if the container itself is hidden/offscreen
+      isVisible = entry.isIntersecting
+    })
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
+    }
+
     const handleScroll = () => {
       isScrolling = true
       clearTimeout(scrollTimeout)
@@ -253,15 +262,20 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = React.memo(({
     window.addEventListener('scroll', handleScroll, { passive: true })
 
     let lastProgress = -1
+    let lastRenderTime = 0
 
     const render = (time: number) => {
       animationFrameId = requestAnimationFrame(render)
 
+      // Stop all heavy calculations if not visible
+      if (!isVisible) return
+
+      // Cap at 30fps during active scroll to prevent main thread jank
+      if (isScrolling && time - lastRenderTime < 33) return
+      lastRenderTime = time
+
       const progress = scrollProgress.get()
       const isProgressChanged = Math.abs(progress - lastProgress) > 0.0001
-      
-      // If we are far down the page (progress > 0.9) and not scrolling, we can optionally throttle.
-      // But we must render if progress changed.
       
       // Calculate morph state
       lastProgress = progress
@@ -423,6 +437,8 @@ export const GlobalCameraMorph: React.FC<GlobalCameraMorphProps> = React.memo(({
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('scroll', handleScroll)
+      clearTimeout(scrollTimeout)
+      observer.disconnect()
 
       // Dispose resources
       ringGeom1.dispose()

@@ -82,6 +82,7 @@ export const GallerySection: React.FC = React.memo(() => {
                   whileTap={{ scale: 0.98 }}
                   transition={{ delay: idx * 0.1, duration: 0.8 }}
                   onClick={() => setSelectedAlbumId(album.id)}
+                  style={{ z: 0, willChange: 'transform' }}
                   className="group cursor-pointer relative bg-[#0A0A0A] border border-[#F5F1E8]/5 rounded-2xl overflow-hidden aspect-[4/3] w-full"
                 >
                   <img
@@ -131,6 +132,7 @@ export const GallerySection: React.FC = React.memo(() => {
                     transition={{ duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
                     key={item.id}
                     onClick={() => setLightboxIndex(index)}
+                    style={{ z: 0, willChange: 'transform' }}
                     className="gallery-card cursor-pointer break-inside-avoid relative group overflow-hidden rounded-2xl border border-[#F5F1E8]/5 shadow-2xl aspect-[4/5] sm:aspect-auto"
                   >
                     <img
@@ -138,6 +140,7 @@ export const GallerySection: React.FC = React.memo(() => {
                       alt={item.title}
                       loading="lazy"
                       decoding="async"
+                      fetchPriority="low"
                       onLoad={(e) => (e.currentTarget.style.opacity = '1')}
                       style={{ opacity: 0 }}
                       className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-102 content-visibility-auto"
