@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Mail, Copy, Check } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { Instagram, Linkedin, Github } from '../components/ui/Icons'
 import { PORTFOLIO_DATA } from '../data/portfolioData'
 import FadeIn from '../components/ui/FadeIn'
@@ -33,8 +34,27 @@ export const ContactSection: React.FC = () => {
 
       <div className="relative z-10 max-w-6xl mx-auto flex flex-col justify-between min-h-[50vh]">
         {/* Top Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
-          <FadeIn y={35} duration={1.2} className="max-w-md">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16 w-full">
+          <div className="w-full md:w-auto">
+            {/* Mobile "GET IN TOUCH" title */}
+            <motion.h2
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, ease: "easeOut" }}
+              className="md:hidden font-serif text-center w-full mb-[20px]"
+              style={{ 
+                color: "rgba(250,247,242,0.96)",
+                fontSize: "clamp(3.2rem, 14vw, 5rem)", 
+                fontWeight: 300, 
+                letterSpacing: "0.02em",
+                lineHeight: 0.9 
+              }}
+            >
+              GET IN TOUCH
+            </motion.h2>
+
+            <FadeIn y={35} duration={1.2} className="max-w-md">
             <span className="text-xs font-semibold tracking-[0.2em] text-[#8B5CF6] uppercase mb-2 block">
               Collaboration
             </span>
@@ -42,6 +62,7 @@ export const ContactSection: React.FC = () => {
               Let&apos;s capture something unforgettable together.
             </h2>
           </FadeIn>
+        </div>
 
           <FadeIn y={35} delay={0.15} duration={1.2} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
             <a 
