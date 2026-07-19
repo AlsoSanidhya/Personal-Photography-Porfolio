@@ -36,24 +36,6 @@ export const ContactSection: React.FC = () => {
         {/* Top Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16 w-full">
           <div className="w-full md:w-auto">
-            {/* Mobile "GET IN TOUCH" title */}
-            <motion.h2
-              initial={{ y: 30, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease: "easeOut" }}
-              className="md:hidden font-serif text-center w-full mb-[20px]"
-              style={{ 
-                color: "rgba(250,247,242,0.96)",
-                fontSize: "clamp(3.2rem, 14vw, 5rem)", 
-                fontWeight: 300, 
-                letterSpacing: "0.02em",
-                lineHeight: 0.9 
-              }}
-            >
-              GET IN TOUCH
-            </motion.h2>
-
             <FadeIn y={35} duration={1.2} className="max-w-md">
             <span className="text-xs font-semibold tracking-[0.2em] text-[#8B5CF6] uppercase mb-2 block">
               Collaboration
@@ -94,7 +76,7 @@ export const ContactSection: React.FC = () => {
         </div>
 
         {/* Big visual banner */}
-        <div className="overflow-hidden mb-16">
+        <div className="hidden md:block overflow-hidden mb-16">
           <FadeIn y={50} delay={0.2} duration={1.2}>
             <ParallaxText baseY={80}>
               <h1 className="hero-heading uppercase tracking-tighter text-center leading-none text-[12vw] sm:text-[13vw] select-none opacity-80">
@@ -103,6 +85,24 @@ export const ContactSection: React.FC = () => {
             </ParallaxText>
           </FadeIn>
         </div>
+
+        {/* Mobile "GET IN TOUCH" title */}
+        <motion.h2
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          className="md:hidden font-serif text-center w-full mt-[48px] mb-[24px]"
+          style={{ 
+            color: "rgba(250,247,242,0.96)",
+            fontSize: "clamp(3.2rem, 14vw, 5rem)", 
+            fontWeight: 300, 
+            letterSpacing: "0.02em",
+            lineHeight: 0.9 
+          }}
+        >
+          GET IN TOUCH
+        </motion.h2>
 
         {/* Footer Bottom info */}
         <div className="flex flex-col md:flex-row justify-between items-center border-t border-[#F5F1E8]/5 pt-8 gap-8 md:gap-6 text-sm text-[#B8B1A6]">
