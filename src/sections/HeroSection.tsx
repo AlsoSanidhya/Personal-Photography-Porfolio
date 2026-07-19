@@ -64,8 +64,12 @@ export const HeroSection: React.FC<HeroSectionProps> = React.memo(({ isReveal = 
   }
 
   // Scroll parallax for the large title (disabled on mobile for performance)
-  const { scrollY } = useScroll()
-  const titleY = useTransform(scrollY, [0, 800], [0, isMobile ? 0 : 140])
+  const heroRef = React.useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start']
+  })
+  const titleY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 0 : 140])
 
   // Explicit transitions for each element to coordinate premium entry
   const navVariants = {
@@ -131,6 +135,7 @@ export const HeroSection: React.FC<HeroSectionProps> = React.memo(({ isReveal = 
 
   return (
     <motion.section
+      ref={heroRef}
       id="hero"
       initial="hidden"
       animate={isReveal ? 'visible' : 'hidden'}
@@ -193,7 +198,7 @@ export const HeroSection: React.FC<HeroSectionProps> = React.memo(({ isReveal = 
         variants={containerVariants}
         className="relative z-20 w-full flex-grow flex items-center justify-center overflow-hidden my-4"
       >
-        <motion.div style={{ y: titleY, willChange: 'transform' }} className="w-full">
+        <motion.div style={{ y: titleY, z: 0, willChange: 'transform' }} className="w-full">
           <h1
             className="
             hero-heading
@@ -218,7 +223,7 @@ export const HeroSection: React.FC<HeroSectionProps> = React.memo(({ isReveal = 
                     {wordIndex > 0 && "\u00A0"}
                     
                     {word.style === "gradient" || word.style === "gradient-glow" ? (
-                      <span style={{ filter: 'drop-shadow(0 0 18px rgba(184,145,255,0.15))' }} className="inline-block">
+                      <span style={{ textShadow: '0 0 18px rgba(184,145,255,0.15)' }} className="inline-block">
                         <motion.span 
                           variants={wordVariants} 
                           className="animate-text-gradient inline-block"

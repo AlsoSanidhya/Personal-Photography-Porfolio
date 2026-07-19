@@ -4,32 +4,17 @@ import { PORTFOLIO_DATA } from '../data/portfolioData'
 
 export const MarqueeSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const [sectionTop, setSectionTop] = useState(0)
-
-  useEffect(() => {
-    const updateSectionTop = () => {
-      if (sectionRef.current) {
-        setSectionTop(sectionRef.current.offsetTop)
-      }
-    }
-    updateSectionTop()
-    window.addEventListener('resize', updateSectionTop)
-    return () => window.removeEventListener('resize', updateSectionTop)
-  }, [])
-
-  const { scrollY } = useScroll()
-
-  // Row 1: moves RIGHT on scroll (offset - 200)
-  const row1X = useTransform(scrollY, (y) => {
-    const offset = (y - sectionTop + window.innerHeight) * 0.3
-    return `${offset - 400}px`
+  // Use scoped scroll tracking to avoid global calculations
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start']
   })
 
-  // Row 2: moves LEFT on scroll (-(offset - 200))
-  const row2X = useTransform(scrollY, (y) => {
-    const offset = (y - sectionTop + window.innerHeight) * 0.3
-    return `${-(offset - 400)}px`
-  })
+  // Row 1: moves RIGHT on scroll
+  const row1X = useTransform(scrollYProgress, [0, 1], ["-400px", "100px"])
+
+  // Row 2: moves LEFT on scroll
+  const row2X = useTransform(scrollYProgress, [0, 1], ["400px", "-100px"])
 
   // Row 1: first 11 images, tripled
   const row1Gifs = [
@@ -54,7 +39,7 @@ export const MarqueeSection: React.FC = () => {
         {/* Row 1 */}
         <div className="w-full overflow-hidden flex">
           <motion.div
-            style={{ x: row1X, willChange: 'transform' }}
+            style={{ x: row1X, z: 0, willChange: 'transform' }}
             className="flex gap-3 whitespace-nowrap"
           >
             {row1Gifs.map((gifUrl, idx) => (
@@ -72,7 +57,7 @@ export const MarqueeSection: React.FC = () => {
         {/* Row 2 */}
         <div className="w-full overflow-hidden flex">
           <motion.div
-            style={{ x: row2X, willChange: 'transform' }}
+            style={{ x: row2X, z: 0, willChange: 'transform' }}
             className="flex gap-3 whitespace-nowrap"
           >
             {row2Gifs.map((gifUrl, idx) => (

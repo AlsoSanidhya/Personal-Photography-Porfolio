@@ -40,7 +40,7 @@ export const ParallaxText: React.FC<ParallaxTextProps> = ({
 
   return (
     <div ref={ref} className="overflow-visible w-full flex justify-center items-center">
-      <motion.div style={{ y, willChange: 'transform' }} className={className}>
+      <motion.div style={{ y, z: 0, backfaceVisibility: 'hidden', willChange: 'transform' }} className={className}>
         {children}
       </motion.div>
     </div>

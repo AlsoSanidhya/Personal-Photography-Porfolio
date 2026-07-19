@@ -13,7 +13,7 @@ const AnimatedChar: React.FC<CharProps> = ({ char, progress, start, end }) => {
   return (
     <span className="relative inline-block">
       <span className="opacity-0">{char}</span>
-      <motion.span style={{ opacity }} className="absolute inset-0">
+      <motion.span style={{ opacity, willChange: 'opacity' }} className="absolute inset-0">
         {char}
       </motion.span>
     </span>
