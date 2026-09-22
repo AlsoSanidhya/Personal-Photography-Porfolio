@@ -1,3 +1,30 @@
+# 📸 Personal Photography Portfolio
+
+A cinematic photography portfolio documenting my work,
+creative experiments, and visual storytelling.
+
+## ✨ Highlights
+
+- Photography showcase
+- Responsive design
+- Smooth animations
+- Modern UI
+- Creative storytelling
+
+## 🛠️ Built With
+
+- React
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+
+## 🌐 Live Website
+
+[Visit Portfolio](YOUR_LINK)
+
+## 📷 Preview
+
+![Portfolio Preview](IMAGE_URL)
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
